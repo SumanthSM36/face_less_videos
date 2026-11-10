@@ -72,8 +72,8 @@ GENRE_CONFIG = {
         "eq": "eq=contrast=1.15:saturation=1.15:brightness=0.0"
     },
     "general": {
-        "voice": "en-US-ChristopherNeural",
-        "vs_voice": "b20a4892",
+        "voice": "en-US-AndrewMultilingualNeural",
+        "vs_voice": "071a1fe1",
         "sub_color": "&H0000FFFF&",
         "rate": "+2%",
         "eq": "eq=contrast=1.12:saturation=1.18:brightness=0.0"
@@ -167,8 +167,8 @@ def validate_image_fidelity(img_path):
     return True
 
 
-def render_short(script_text, image_paths, output_mp4, genre="general", title="Faceless Short", voice=None, engine="auto"):
-    cfg = GENRE_CONFIG.get(genre, GENRE_CONFIG["general"])
+def render_short(script_text, image_paths, output_mp4, genre="story", title="Faceless Short", voice=None, engine="edge"):
+    cfg = GENRE_CONFIG.get(genre, GENRE_CONFIG["story"])
     work_dir = os.path.dirname(os.path.abspath(output_mp4))
     os.makedirs(work_dir, exist_ok=True)
     
@@ -186,10 +186,10 @@ def render_short(script_text, image_paths, output_mp4, genre="general", title="F
     use_vs = False
     if engine == "voicestudio":
         use_vs = vs_online
-    elif engine == "edge":
+    elif engine == "auto":
+        use_vs = False  # Default to Andrew Multilingual for pure human touch
+    else:  # edge
         use_vs = False
-    else:  # auto
-        use_vs = vs_online and ("vs_voice" in cfg or genre == "pip")
 
     if use_vs:
         vs_target_voice = voice or cfg.get("vs_voice", "demo0001")
@@ -215,13 +215,13 @@ def render_short(script_text, image_paths, output_mp4, genre="general", title="F
         subprocess.run(cmd_tts, check=True)
     dur = get_audio_duration(voice_audio)
     
-    # Apply Studio Acoustic Vocal Mastering (brickwall true-peak limiter, 140Hz deep chest warmth, de-essing)
-    print("🎛️ Mastering Vocal Track: 140Hz baritone boost, de-essing & zero-distortion limiting...")
+    # Apply Studio Acoustic Vocal Mastering (anti-buzz lowpass, 280Hz warm chest EQ, de-essing, soft-knee compand & limiter)
+    print("🎛️ Mastering Vocal Track: 280Hz conversational warm boost, de-essing & studio limiting...")
     mastered_voice = os.path.join(work_dir, "mastered_voice.mp3")
     cmd_master = [
         FFMPEG, "-y",
         "-i", voice_audio,
-        "-af", "highpass=f=60,equalizer=f=140:t=q:w=0.8:g=2.0,equalizer=f=3400:t=q:w=1.8:g=-3.5,lowpass=f=8800,alimiter=limit=-1.5dB:attack=7:release=60:asc=1",
+        "-af", "highpass=f=80,lowpass=f=11000,equalizer=f=280:t=q:w=1.0:g=3.0,equalizer=f=3200:t=q:w=1.5:g=-2.5,compand=attacks=0.02:decays=0.2:points=-80/-80|-30/-20|0/-12:soft-knee=6,alimiter=limit=-1.5dB:attack=5:release=50:asc=1",
         "-c:a", "libmp3lame",
         "-b:a", "192k",
         mastered_voice
@@ -339,9 +339,9 @@ def render_short(script_text, image_paths, output_mp4, genre="general", title="F
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Faceless Video Director Master Engine")
-    parser.add_argument("--genre", default="general", choices=list(GENRE_CONFIG.keys()))
+    parser.add_argument("--genre", default="story", choices=list(GENRE_CONFIG.keys()))
     parser.add_argument("--voice", default=None, help="Voice name or profile ID override")
-    parser.add_argument("--engine", default="auto", choices=["auto", "voicestudio", "edge"], help="TTS engine choice")
+    parser.add_argument("--engine", default="edge", choices=["auto", "voicestudio", "edge"], help="TTS engine choice")
     parser.add_argument("--title", default="Untitled Master Short")
     parser.add_argument("--script", required=True)
     parser.add_argument("--images", nargs="+", required=True)
