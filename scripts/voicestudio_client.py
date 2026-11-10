@@ -2,8 +2,8 @@
 """
 voicestudio_client.py — VoiceStudio (debpalash/voicestudio) Integration Client.
 
-Connects to VoiceStudio's local REST API & MCP server (default: http://127.0.0.1:3900)
-to provide local, zero-cost, ElevenLabs-quality voice cloning and voice design.
+Connects to VoiceStudio's local OpenAI-compatible REST API & backend
+(default: http://127.0.0.1:3900) running with Apple Silicon Metal (MPS) acceleration.
 """
 
 import os
@@ -18,74 +18,61 @@ VOICESTUDIO_HOST = os.environ.get("OMNIVOICE_HOST", "http://127.0.0.1:3900")
 def check_voicestudio_running() -> bool:
     """Checks if VoiceStudio backend is active and reachable."""
     try:
-        url = f"{VOICESTUDIO_HOST}/api/health"
+        url = f"{VOICESTUDIO_HOST}/health"
         req = urllib.request.Request(url, headers={"User-Agent": "Antigravity/1.0"})
         with urllib.request.urlopen(req, timeout=2.0) as resp:
-            return resp.status in (200, 204)
+            data = json.loads(resp.read().decode("utf-8"))
+            return data.get("status") == "ok"
     except Exception:
-        # Fallback check on root /mcp
-        try:
-            url = f"{VOICESTUDIO_HOST}/mcp"
-            req = urllib.request.Request(url, headers={"User-Agent": "Antigravity/1.0"})
-            with urllib.request.urlopen(req, timeout=2.0) as resp:
-                return resp.status in (200, 204, 404, 405)
-        except Exception:
-            return False
+        return False
+
+
+def get_backend_info():
+    """Gets VoiceStudio device and status info."""
+    url = f"{VOICESTUDIO_HOST}/health"
+    try:
+        req = urllib.request.Request(url)
+        with urllib.request.urlopen(req, timeout=2.0) as resp:
+            return json.loads(resp.read().decode("utf-8"))
+    except Exception:
+        return None
 
 
 def list_profiles():
     """Lists available voice profiles from VoiceStudio."""
-    url = f"{VOICESTUDIO_HOST}/api/voices"
+    url = f"{VOICESTUDIO_HOST}/profiles"
     try:
         req = urllib.request.Request(url)
         with urllib.request.urlopen(req, timeout=5.0) as resp:
-            data = json.loads(resp.read().decode("utf-8"))
-            return data
+            return json.loads(resp.read().decode("utf-8"))
     except Exception as e:
         print(f"⚠️ Could not list VoiceStudio profiles: {e}")
         return []
 
 
-def design_voice(description: str, name: str) -> str:
+def synthesize_speech(
+    text: str,
+    output_path: str,
+    voice: str = "demo0001",
+    model: str = "omnivoice",
+    speed: float = 1.0,
+    instruct: str = None
+) -> str:
     """
-    Designs a unique voice persona using natural language description.
-    Returns the created profile_id.
+    Synthesizes speech using VoiceStudio's local hardware-accelerated OpenAI API.
+    Saves audio directly to output_path (.mp3 or .wav).
     """
-    url = f"{VOICESTUDIO_HOST}/api/voice/design"
-    payload = json.dumps({
-        "name": name,
-        "description": description
-    }).encode("utf-8")
-    
-    req = urllib.request.Request(
-        url,
-        data=payload,
-        headers={"Content-Type": "application/json"}
-    )
-    try:
-        with urllib.request.urlopen(req, timeout=30.0) as resp:
-            data = json.loads(resp.read().decode("utf-8"))
-            profile_id = data.get("profile_id") or data.get("id")
-            print(f"✅ Voice designed successfully: {name} (ID: {profile_id})")
-            return profile_id
-    except Exception as e:
-        print(f"❌ Failed to design voice with VoiceStudio: {e}")
-        return None
-
-
-def synthesize_speech(text: str, output_path: str, profile_id: str = None, language: str = "en"):
-    """
-    Synthesizes speech using VoiceStudio's local engine.
-    Saves audio directly to output_path.
-    """
-    url = f"{VOICESTUDIO_HOST}/api/generate"
+    url = f"{VOICESTUDIO_HOST}/v1/audio/speech"
+    fmt = "wav" if output_path.endswith(".wav") else "mp3"
     payload_data = {
-        "text": text,
-        "language": language,
-        "format": "wav" if output_path.endswith(".wav") else "mp3"
+        "model": model,
+        "input": text,
+        "voice": voice,
+        "response_format": fmt,
+        "speed": speed
     }
-    if profile_id:
-        payload_data["profile_id"] = profile_id
+    if instruct:
+        payload_data["instruct"] = instruct
 
     payload = json.dumps(payload_data).encode("utf-8")
     req = urllib.request.Request(
@@ -94,7 +81,7 @@ def synthesize_speech(text: str, output_path: str, profile_id: str = None, langu
         headers={"Content-Type": "application/json"}
     )
     try:
-        with urllib.request.urlopen(req, timeout=60.0) as resp:
+        with urllib.request.urlopen(req, timeout=120.0) as resp:
             with open(output_path, "wb") as f:
                 f.write(resp.read())
             print(f"✅ VoiceStudio synthesized {len(text)} chars -> {output_path}")
@@ -104,6 +91,88 @@ def synthesize_speech(text: str, output_path: str, profile_id: str = None, langu
         raise
 
 
+def transcribe_audio(audio_path: str) -> dict:
+    """Transcribes an audio file with timestamps using VoiceStudio's local ASR."""
+    import mimetypes
+    url = f"{VOICESTUDIO_HOST}/v1/audio/transcriptions"
+    
+    boundary = "----WebKitFormBoundaryVoiceStudio7MA4YWxkTrZu0gW"
+    data = []
+    
+    # model field
+    data.append(f"--{boundary}".encode())
+    data.append(b'Content-Disposition: form-data; name="model"')
+    data.append(b"")
+    data.append(b"whisper")
+    
+    # response_format field
+    data.append(f"--{boundary}".encode())
+    data.append(b'Content-Disposition: form-data; name="response_format"')
+    data.append(b"")
+    data.append(b"verbose_json")
+    
+    # file field
+    filename = os.path.basename(audio_path)
+    data.append(f"--{boundary}".encode())
+    data.append(f'Content-Disposition: form-data; name="file"; filename="{filename}"'.encode())
+    data.append(b"Content-Type: audio/mpeg")
+    data.append(b"")
+    with open(audio_path, "rb") as f:
+        data.append(f.read())
+        
+    data.append(f"--{boundary}--".encode())
+    data.append(b"")
+    
+    body = b"\r\n".join(data)
+    req = urllib.request.Request(
+        url,
+        data=body,
+        headers={"Content-Type": f"multipart/form-data; boundary={boundary}"}
+    )
+    with urllib.request.urlopen(req, timeout=30.0) as resp:
+        return json.loads(resp.read().decode("utf-8"))
+
+
+def transcribe_to_vtt(audio_path: str, vtt_path: str):
+    """Generates a WebVTT subtitle file from VoiceStudio's local transcription."""
+    result = transcribe_audio(audio_path)
+    segments = result.get("segments", [])
+    
+    def fmt_vtt_time(sec):
+        h = int(sec // 3600)
+        m = int((sec % 3600) // 60)
+        s = int(sec % 60)
+        ms = int((sec - int(sec)) * 1000)
+        return f"{h:02d}:{m:02d}:{s:02d}.{ms:03d}"
+
+    lines = ["WEBVTT\n"]
+    if not segments:
+        dur = result.get("duration", 5.0)
+        lines.append(f"00:00:00.000 --> {fmt_vtt_time(dur)}")
+        lines.append(result.get("text", "").strip())
+        lines.append("")
+    else:
+        for idx, seg in enumerate(segments):
+            start = fmt_vtt_time(seg.get("start", 0.0))
+            end = fmt_vtt_time(seg.get("end", 0.0))
+            txt = seg.get("text", "").strip()
+            lines.append(f"{start} --> {end}")
+            lines.append(txt)
+            lines.append("")
+
+    with open(vtt_path, "w", encoding="utf-8") as f:
+        f.write("\n".join(lines) + "\n")
+    print(f"✅ VoiceStudio transcribed audio to VTT: {vtt_path}")
+    return vtt_path
+
+
 if __name__ == "__main__":
     is_up = check_voicestudio_running()
-    print(f"VoiceStudio server ({VOICESTUDIO_HOST}): {'ONLINE 🟢' if is_up else 'OFFLINE ⚪'}")
+    info = get_backend_info() if is_up else {}
+    device = info.get("device", "unknown")
+    print(f"VoiceStudio server ({VOICESTUDIO_HOST}): {'ONLINE 🟢 (Device: ' + device.upper() + ')' if is_up else 'OFFLINE ⚪'}")
+    if is_up:
+        profiles = list_profiles()
+        print(f"Available profiles: {len(profiles)}")
+        for p in profiles:
+            print(f" - [{p.get('id')}] {p.get('name')} ({p.get('language')})")

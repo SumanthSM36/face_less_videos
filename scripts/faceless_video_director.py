@@ -18,6 +18,8 @@ import argparse
 import subprocess
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+if SCRIPT_DIR not in sys.path:
+    sys.path.insert(0, SCRIPT_DIR)
 WORKSPACE_ROOT = os.path.abspath(os.path.join(SCRIPT_DIR, ".."))
 VENV_DIR = os.path.join(WORKSPACE_ROOT, ".venv")
 FFMPEG = os.path.join(VENV_DIR, "lib/python3.9/site-packages/imageio_ffmpeg/binaries/ffmpeg-macos-aarch64-v7.1")
@@ -163,13 +165,14 @@ def render_short(script_text, image_paths, output_mp4, genre="general", title="F
     print("\n🎬 --- STEP 1: Natural Human Voice Synthesis ---")
     
     # Check if VoiceStudio local engine is online
-    from voicestudio_client import check_voicestudio_running, synthesize_speech as vs_synthesize
+    from voicestudio_client import check_voicestudio_running, synthesize_speech as vs_synthesize, transcribe_to_vtt as vs_transcribe
     vs_online = check_voicestudio_running()
     
     if vs_online and genre == "pip":
-        print("🎙️ Using VoiceStudio Local Engine (Pip Custom Voice Clone / Design)")
+        print("🎙️ Using VoiceStudio Local Engine (Apple Silicon MPS Accelerated)")
         try:
-            vs_synthesize(script_text, voice_audio, profile_id="pip-voice")
+            vs_synthesize(script_text, voice_audio, voice="demo0001")
+            vs_transcribe(voice_audio, vtt_file)
         except Exception as e:
             print(f"⚠️ VoiceStudio fallback to Edge-TTS: {e}")
             vs_online = False
