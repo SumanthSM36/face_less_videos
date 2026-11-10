@@ -59,21 +59,18 @@ GENRE_CONFIG = {
     },
     "story": {
         "voice": "en-US-AndrewMultilingualNeural",
-        "vs_voice": "071a1fe1",  # UltraDeepCinematic (zero distortion, deep baritone)
         "sub_color": "&H0000FFFF&",  # High-contrast yellow
         "rate": "+2%",
         "eq": "eq=contrast=1.14:saturation=1.20:brightness=0.01"
     },
     "documentary": {
         "voice": "en-US-BrianNeural",
-        "vs_voice": "b20a4892",  # CinematicNarrator
         "sub_color": "&H00FFFFFF&",  # Crisp white
         "rate": "+2%",
         "eq": "eq=contrast=1.15:saturation=1.15:brightness=0.0"
     },
     "general": {
         "voice": "en-US-AndrewMultilingualNeural",
-        "vs_voice": "071a1fe1",
         "sub_color": "&H0000FFFF&",
         "rate": "+2%",
         "eq": "eq=contrast=1.12:saturation=1.18:brightness=0.0"
@@ -167,7 +164,7 @@ def validate_image_fidelity(img_path):
     return True
 
 
-def render_short(script_text, image_paths, output_mp4, genre="story", title="Faceless Short", voice=None, engine="edge"):
+def render_short(script_text, image_paths, output_mp4, genre="story", title="Faceless Short", voice=None):
     cfg = GENRE_CONFIG.get(genre, GENRE_CONFIG["story"])
     work_dir = os.path.dirname(os.path.abspath(output_mp4))
     os.makedirs(work_dir, exist_ok=True)
@@ -178,41 +175,17 @@ def render_short(script_text, image_paths, output_mp4, genre="story", title="Fac
     thumb_jpg = os.path.join(work_dir, "thumbnail.jpg")
 
     print("\n🎬 --- STEP 1: Natural Human Voice Synthesis ---")
-    
-    # Check if VoiceStudio local engine is online
-    from voicestudio_client import check_voicestudio_running, synthesize_speech as vs_synthesize, transcribe_to_vtt as vs_transcribe
-    vs_online = check_voicestudio_running()
-    
-    use_vs = False
-    if engine == "voicestudio":
-        use_vs = vs_online
-    elif engine == "auto":
-        use_vs = False  # Default to Andrew Multilingual for pure human touch
-    else:  # edge
-        use_vs = False
-
-    if use_vs:
-        vs_target_voice = voice or cfg.get("vs_voice", "demo0001")
-        print(f"🎙️ Using VoiceStudio Local Engine (Profile: {vs_target_voice}) [Apple Silicon MPS]")
-        try:
-            vs_synthesize(script_text, voice_audio, voice=vs_target_voice)
-            vs_transcribe(voice_audio, vtt_file)
-        except Exception as e:
-            print(f"⚠️ VoiceStudio error, falling back to Edge-TTS: {e}")
-            use_vs = False
-
-    if not use_vs:
-        edge_voice = voice or cfg["voice"]
-        print(f"Narrator (Edge-TTS): {edge_voice} (Rate: {cfg['rate']})")
-        cmd_tts = [
-            EDGE_TTS,
-            "--voice", edge_voice,
-            "--rate", cfg["rate"],
-            "--text", script_text,
-            "--write-media", voice_audio,
-            "--write-subtitles", vtt_file
-        ]
-        subprocess.run(cmd_tts, check=True)
+    edge_voice = voice or cfg["voice"]
+    print(f"🎙️ Narrator (Edge-TTS): {edge_voice} (Rate: {cfg['rate']})")
+    cmd_tts = [
+        EDGE_TTS,
+        "--voice", edge_voice,
+        "--rate", cfg["rate"],
+        "--text", script_text,
+        "--write-media", voice_audio,
+        "--write-subtitles", vtt_file
+    ]
+    subprocess.run(cmd_tts, check=True)
     dur = get_audio_duration(voice_audio)
     
     # Apply Studio Acoustic Vocal Mastering (anti-buzz lowpass, 280Hz warm chest EQ, de-essing, soft-knee compand & limiter)
@@ -340,12 +313,11 @@ def render_short(script_text, image_paths, output_mp4, genre="story", title="Fac
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Faceless Video Director Master Engine")
     parser.add_argument("--genre", default="story", choices=list(GENRE_CONFIG.keys()))
-    parser.add_argument("--voice", default=None, help="Voice name or profile ID override")
-    parser.add_argument("--engine", default="edge", choices=["auto", "voicestudio", "edge"], help="TTS engine choice")
+    parser.add_argument("--voice", default=None, help="Voice name override (e.g. en-US-AndrewMultilingualNeural)")
     parser.add_argument("--title", default="Untitled Master Short")
     parser.add_argument("--script", required=True)
     parser.add_argument("--images", nargs="+", required=True)
     parser.add_argument("--output", default="output/director_short.mp4")
     args = parser.parse_args()
 
-    render_short(args.script, args.images, args.output, genre=args.genre, title=args.title, voice=args.voice, engine=args.engine)
+    render_short(args.script, args.images, args.output, genre=args.genre, title=args.title, voice=args.voice)
