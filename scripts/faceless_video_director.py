@@ -219,10 +219,16 @@ def render_short(script_text, image_paths, output_mp4, genre="story", title="Fac
     
     clip_paths = []
     zp_patterns = [
-        ("zoompan=z='min(zoom+0.0015,1.2)':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)'", "Wide Slow Zoom"),
-        ("zoompan=z='min(zoom+0.002,1.3)':x='iw*0.35':y='ih*0.25'", "Punch-in Medium"),
-        ("zoompan=z='min(zoom+0.0018,1.25)':x='iw*0.4':y='ih*0.55'", "Slow Upward Pan"),
-        ("zoompan=z='min(zoom+0.0025,1.35)':x='iw*0.45':y='ih*0.4'", "Macro Hero Focus")
+        ("zoompan=z='min(zoom+0.0018,1.22)':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)'", "Wide Cinematic Crane Down"),
+        ("zoompan=z='min(zoom+0.0028,1.35)':x='iw*0.4':y='ih*0.65'", "Punch-in Hero Focus"),
+        ("zoompan=z='min(zoom+0.002,1.26)':x='iw*0.3':y='ih*0.25'", "Low-Angle Dramatic Tilt"),
+        ("zoompan=z='min(zoom+0.0025,1.38)':x='iw*0.45':y='ih*0.6'", "Character Expression Close-up"),
+        ("zoompan=z='min(zoom+0.0016,1.24)':x='iw/2-(iw/zoom/2)':y='ih*0.35'", "Volumetric Sweeping Pan"),
+        ("zoompan=z='min(zoom+0.0022,1.3)':x='iw*0.48':y='ih*0.55'", "Gentle Downward Push"),
+        ("zoompan=z='min(zoom+0.0025,1.35)':x='iw*0.45':y='ih*0.45'", "Intimate Emotional Zoom"),
+        ("zoompan=z='min(zoom+0.0018,1.25)':x='iw*0.4':y='ih*0.3'", "Tender Reaction Glide"),
+        ("zoompan=z='min(zoom+0.0022,1.32)':x='iw*0.42':y='ih*0.5'", "Macro Hero Slow-Pan"),
+        ("zoompan=z='min(zoom+0.003,1.4)':x='iw*0.45':y='ih*0.45'", "Luminous Stardust Pull-Back Loop")
     ]
     
     cut_idx = 0

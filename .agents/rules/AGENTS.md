@@ -33,9 +33,11 @@ When authoring or generating short-form vertical videos (YouTube Shorts, TikTok,
 - **Visual Sourcing Guard:** Open video search is restricted to verified Public Domain (NASA under 17 U.S.C. § 105, Prelinger Archive, FedFlix) or CC-BY/Pexels commercial-licensed media.
 - **Fingerprint Transformation:** Always apply the cinematic 35mm grain, color curves, lens vignette, and burned ASS captions to generate a 100% unique pixel fingerprint, eliminating false-positive Content ID claims.
 
-## 7. Dynamic Cartoon & Animation Interstitials (High-Engagement Inserts)
-- **Visual Variety:** Intersperse stylized animation or expressive cartoon-like reaction clips/illustrations in between realistic or archival documentary scenes.
-- **Dopamine & Retention:** Pure static or realistic sequences risk audience fatigue. Adding fun, animated visual metaphors or stylized cuts every 2–3 scenes drastically boosts watch time, viewer delight, and Shorts algorithm retention.
+## 7. Senior Animation Director Mandate (3D Pixar / Disney Cinematic Standard)
+- **Standard of Direction:** Whenever asked to create animated story shorts ("create like this", cartoon stories, or character journeys), the agent must act as a senior animation director directing a 5-scene emotional arc: (1) World & Scale contrast, (2) Obstacle & Dramatic/Humorous Tension, (3) Divine Grace / Mentor entrance at golden hour, (4) Intimate Devotion (glistening teary eyes in open palm), (5) Cosmic Transformation (macro stardust blessing) blending back into the opening hook phrase.
+- **10-Cut Camera Choreography:** Every animated scene must receive 2 distinct purposeful camera cuts (wide crane, punch-in hero, low-angle upward tilt, character close-up, volumetric sweep, downward push, intimate emotional zoom, tender tracking, macro hero slow-pan, luminous pull-back loop).
+- **Studio Vocal Mastering & Scoring:** Primary voice must be `en-US-AndrewMultilingualNeural` (+2%) or `en-IN-PrabhatNeural` (+3%) treated with the Studio Vocal Mastering Chain (`280Hz` warm chest EQ, de-essing at `3200Hz`, `-1.5dBFS` true-peak limiter). Acoustic piano/string music must be dynamically ducked to 18%–20%.
+- **Kinetic Safe Zones:** Subtitles must use high-contrast Pixar Yellow (`#00FFFF`) or Amber Gold (`#00D0FF`) with thick black borders (`Outline=6`), centered strictly at `Y=1450px`.
 
 ## 8. Strict Visual Fidelity & Asset Quality Gate (Anti-Blur Safeguard)
 - **Zero Low-Resolution Fallbacks:** Never accept blurry, deformed, or low-resolution fallback images (e.g. 576x1024 or sub-500KB compressed renders).

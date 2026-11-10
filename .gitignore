@@ -21,6 +21,10 @@ output/voice_samples/
 output/master_andrew_story/
 output/test_christopher_story/
 output/channel_videos_cache.json
+output/animated_squirrel_ramayana/*.txt
+output/animated_squirrel_ramayana/*.ass
+output/animated_squirrel_ramayana/*.vtt
+output/animated_squirrel_ramayana/*.mp3
 
 # OS Artifacts
 .DS_Store
