@@ -1,0 +1,44 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1080
+PlayResY: 1920
+ScaledBorderAndShadow: yes
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Default,Impact,82,&H0000FFFF,&H000000FF,&H00000000,&H80000000,-1,0,0,0,100,100,2,0,1,6,2,2,60,60,400,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.10,0:00:01.23,Default,,0,0,0,,DID THE DEMON
+Dialogue: 0,0:00:01.23,0:00:02.36,Default,,0,0,0,,KING RAVANA ACTUALLY
+Dialogue: 0,0:00:02.36,0:00:03.50,Default,,0,0,0,,POSSESS TEN PHYSICAL
+Dialogue: 0,0:00:03.50,0:00:04.63,Default,,0,0,0,,HUMAN HEADS?
+Dialogue: 0,0:00:04.58,0:00:05.69,Default,,0,0,0,,ACCORDING TO ANCIENT
+Dialogue: 0,0:00:05.69,0:00:06.80,Default,,0,0,0,,VEDIC SCHOLARS, DASHANATHA’S
+Dialogue: 0,0:00:06.80,0:00:07.92,Default,,0,0,0,,TEN HEADS WERE
+Dialogue: 0,0:00:07.92,0:00:09.03,Default,,0,0,0,,NOT A PHYSICAL
+Dialogue: 0,0:00:09.03,0:00:10.14,Default,,0,0,0,,DEFORMITY.
+Dialogue: 0,0:00:10.14,0:00:11.14,Default,,0,0,0,,THEY REPRESENTED HIS
+Dialogue: 0,0:00:11.14,0:00:12.13,Default,,0,0,0,,MASTERY OVER THE
+Dialogue: 0,0:00:12.13,0:00:13.13,Default,,0,0,0,,FOUR VEDAS AND
+Dialogue: 0,0:00:13.13,0:00:14.12,Default,,0,0,0,,THE SIX SACRED
+Dialogue: 0,0:00:14.12,0:00:15.12,Default,,0,0,0,,SHASTRAS.
+Dialogue: 0,0:00:15.12,0:00:16.72,Default,,0,0,0,,EACH HEAD ALSO
+Dialogue: 0,0:00:16.72,0:00:18.31,Default,,0,0,0,,SYMBOLIZED THE TEN
+Dialogue: 0,0:00:18.31,0:00:19.91,Default,,0,0,0,,FACULTIES OF HUMAN
+Dialogue: 0,0:00:19.91,0:00:21.51,Default,,0,0,0,,INTELLECT: INTELLECT, MIND,
+Dialogue: 0,0:00:21.51,0:00:23.10,Default,,0,0,0,,EGO, MEMORY, ANGER,
+Dialogue: 0,0:00:23.10,0:00:24.70,Default,,0,0,0,,PRIDE, LUST, GREED,
+Dialogue: 0,0:00:24.70,0:00:26.30,Default,,0,0,0,,JEALOUSY, AND DELUSION.
+Dialogue: 0,0:00:26.30,0:00:27.30,Default,,0,0,0,,BY SEVERING ONE
+Dialogue: 0,0:00:27.30,0:00:28.30,Default,,0,0,0,,HEAD IN PENANCE
+Dialogue: 0,0:00:28.30,0:00:29.30,Default,,0,0,0,,TO LORD SHIVA,
+Dialogue: 0,0:00:29.30,0:00:30.30,Default,,0,0,0,,RAVANA CLAIMED TOTAL
+Dialogue: 0,0:00:30.30,0:00:31.31,Default,,0,0,0,,DOMINION OVER HIS
+Dialogue: 0,0:00:31.31,0:00:32.31,Default,,0,0,0,,EGO.
+Dialogue: 0,0:00:32.31,0:00:33.47,Default,,0,0,0,,YET IT WAS
+Dialogue: 0,0:00:33.47,0:00:34.64,Default,,0,0,0,,EGO ITSELF THAT
+Dialogue: 0,0:00:34.64,0:00:35.80,Default,,0,0,0,,ULTIMATELY DESTROYED HIM.
+Dialogue: 0,0:00:35.80,0:00:37.17,Default,,0,0,0,,PROVING WHY SCHOLARS
+Dialogue: 0,0:00:37.17,0:00:38.55,Default,,0,0,0,,STILL DEBATE...

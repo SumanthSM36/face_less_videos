@@ -1,0 +1,45 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1080
+PlayResY: 1920
+ScaledBorderAndShadow: yes
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Default,Impact,82,&H0000FFFF,&H000000FF,&H00000000,&H80000000,-1,0,0,0,100,100,2,0,1,6,2,2,60,60,400,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.10,0:00:01.28,Default,,0,0,0,,THE GIANT KUMBHAKARNA
+Dialogue: 0,0:00:01.28,0:00:02.45,Default,,0,0,0,,WAS MEANT TO
+Dialogue: 0,0:00:02.45,0:00:03.62,Default,,0,0,0,,CONQUER THE HEAVENS—UNTIL
+Dialogue: 0,0:00:03.63,0:00:04.80,Default,,0,0,0,,ONE MISPRONOUNCED LETTER
+Dialogue: 0,0:00:04.80,0:00:05.97,Default,,0,0,0,,DOOMED HIM.
+Dialogue: 0,0:00:05.92,0:00:06.90,Default,,0,0,0,,AFTER A THOUSAND
+Dialogue: 0,0:00:06.90,0:00:07.88,Default,,0,0,0,,YEARS OF SEVERE
+Dialogue: 0,0:00:07.88,0:00:08.85,Default,,0,0,0,,TAPASYA, LORD BRAHMA
+Dialogue: 0,0:00:08.85,0:00:09.83,Default,,0,0,0,,APPEARED TO GRANT
+Dialogue: 0,0:00:09.83,0:00:10.80,Default,,0,0,0,,THE GIANT ANY
+Dialogue: 0,0:00:10.80,0:00:11.78,Default,,0,0,0,,BOON.
+Dialogue: 0,0:00:11.78,0:00:13.06,Default,,0,0,0,,KUMBHAKARNA PREPARED TO
+Dialogue: 0,0:00:13.06,0:00:14.35,Default,,0,0,0,,DEMAND INDRA-ASANA—THE SOVEREIGN
+Dialogue: 0,0:00:14.35,0:00:15.64,Default,,0,0,0,,THRONE OF THE
+Dialogue: 0,0:00:15.64,0:00:16.92,Default,,0,0,0,,HEAVENS.
+Dialogue: 0,0:00:16.92,0:00:18.22,Default,,0,0,0,,TERRIFIED OF HIS
+Dialogue: 0,0:00:18.22,0:00:19.52,Default,,0,0,0,,IMPENDING REIGN, THE
+Dialogue: 0,0:00:19.52,0:00:20.83,Default,,0,0,0,,DEVAS BEGGED GODDESS
+Dialogue: 0,0:00:20.83,0:00:22.13,Default,,0,0,0,,SARASWATI TO INTERVENE.
+Dialogue: 0,0:00:22.13,0:00:23.22,Default,,0,0,0,,SHE DESCENDED ONTO
+Dialogue: 0,0:00:23.22,0:00:24.30,Default,,0,0,0,,HIS GIANT TONGUE
+Dialogue: 0,0:00:24.30,0:00:25.39,Default,,0,0,0,,FOR A SPLIT
+Dialogue: 0,0:00:25.39,0:00:26.48,Default,,0,0,0,,SECOND, TWISTING HIS
+Dialogue: 0,0:00:26.48,0:00:27.57,Default,,0,0,0,,WORDS INTO NIDRA-ASANA—THE
+Dialogue: 0,0:00:27.57,0:00:28.66,Default,,0,0,0,,DESIRE FOR ENDLESS
+Dialogue: 0,0:00:28.66,0:00:29.75,Default,,0,0,0,,SLEEP.
+Dialogue: 0,0:00:29.75,0:00:30.86,Default,,0,0,0,,WHEN KUMBHAKARNA REALIZED
+Dialogue: 0,0:00:30.86,0:00:31.97,Default,,0,0,0,,HIS MISTAKE, BRAHMA
+Dialogue: 0,0:00:31.97,0:00:33.08,Default,,0,0,0,,GRANTED HIM WAKEFULNESS
+Dialogue: 0,0:00:33.08,0:00:34.19,Default,,0,0,0,,FOR ONLY ONE
+Dialogue: 0,0:00:34.19,0:00:35.31,Default,,0,0,0,,DAY EVERY SIX
+Dialogue: 0,0:00:35.31,0:00:36.42,Default,,0,0,0,,MONTHS.
+Dialogue: 0,0:00:36.42,0:00:38.50,Default,,0,0,0,,WHICH EXPLAINS WHY...

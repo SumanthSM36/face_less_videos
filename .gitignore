@@ -1,0 +1,24 @@
+# Credentials & Secrets
+token.json
+client_secret.json
+*.pem
+*.key
+.env
+.env.*
+
+# Python Environment
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Large Media & Render Outputs
+output/**/*.mp4
+output/**/*.wav
+output/temp_build/
+output/voice_samples/
+
+# OS Artifacts
+.DS_Store
+Thumbs.db

@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>India Interactive Map</title>
+  
+  <!-- Leaflet CSS for map rendering -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+
+  <style>
+    :root {
+      --primary: #FF9933;       /* Saffron */
+      --secondary: #138808;     /* Green */
+      --navy: #000080;          /* Ashoka Chakra Navy */
+      --dark: #0f172a;
+      --card-bg: rgba(255, 255, 255, 0.95);
+      --border: #e2e8f0;
+      --text-main: #1e293b;
+      --text-muted: #64748b;
+      --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      color: var(--text-main);
+      background-color: #f8fafc;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    /* Header */
+    header {
+      background: #ffffff;
+      padding: 0.75rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      z-index: 1000;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .flag-stripe {
+      display: flex;
+      flex-direction: column;
+      width: 28px;
+      height: 20px;
+      border-radius: 3px;
+      overflow: hidden;
+      box-shadow: 0 0 0 1px rgba(0,0,0,0.1);
+    }
+    .flag-stripe span:nth-child(1) { background: #FF9933; flex: 1; }
+    .flag-stripe span:nth-child(2) { background: #FFFFFF; flex: 1; display: flex; align-items: center; justify-content: center; }
+    .flag-stripe span:nth-child(3) { background: #138808; flex: 1; }
+    .chakra-dot {
+      width: 4px;
+      height: 4px;
+      background: var(--navy);
+      border-radius: 50%;
+    }
+
+    .brand-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--dark);
+      letter-spacing: -0.02em;
+    }
+
+    .brand-sub {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-left: 8px;
+      font-weight: 400;
+    }
+
+    /* Controls Header Bar */
+    .controls-bar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .search-box {
+      position: relative;
+    }
+
+    .search-box input {
+      padding: 0.45rem 0.85rem 0.45rem 2rem;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      font-size: 0.85rem;
+      outline: none;
+      width: 210px;
+      transition: all 0.2s ease;
+      background: #f1f5f9;
+    }
+
+    .search-box input:focus {
+      width: 250px;
+      background: #fff;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(255, 153, 51, 0.2);
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      pointer-events: none;
+    }
+
+    .region-pills {
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      padding: 2px 0;
+    }
+
+    .pill-btn {
+      background: #f1f5f9;
+      border: 1px solid transparent;
+      padding: 0.35rem 0.75rem;
+      border-radius: 16px;
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.15s ease;
+      white-space: nowrap;
+    }
+
+    .pill-btn:hover, .pill-btn.active {
+      background: var(--dark);
+      color: #fff;
+    }
+
+    .pill-btn.active {
+      background: #ff7700;
+    }
+
+    /* Main Container */
+    #main-container {
+      position: relative;
+      flex: 1;
+      width: 100%;
+      height: 100%;
+    }
+
+    #map {
+      width: 100%;
+      height: 100%;
+      background-color: #e5e9ec;
+    }
+
+    /* Floating Side Card */
+    .info-card {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      width: 330px;
+      max-height: calc(100% - 32px);
+      background: var(--card-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.7);
+      box-shadow: var(--shadow);
+      z-index: 1000;
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      overflow-y: auto;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+
+    .info-card.collapsed {
+      transform: translateX(110%);
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .info-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 8px;
+    }
+
+    .info-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--dark);
+    }
+
+    .info-tag {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--primary);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .close-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 1.2rem;
+      color: var(--text-muted);
+      line-height: 1;
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+    .close-btn:hover {
+      background: #f1f5f9;
+      color: var(--dark);
+    }
+
+    .info-body {
+      font-size: 0.88rem;
+      line-height: 1.5;
+      color: #334155;
+    }
+
+    .info-meta {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+      margin-top: 6px;
+    }
+
+    .meta-item {
+      background: #f8fafc;
+      padding: 8px 10px;
+      border-radius: 8px;
+      border: 1px solid #edf2f7;
+    }
+
+    .meta-label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    .meta-value {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--dark);
+      margin-top: 2px;
+    }
+
+    /* Floating Map Tool Controls */
+    .map-tools {
+      position: absolute;
+      bottom: 24px;
+      left: 16px;
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .tool-btn {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--text-main);
+      transition: all 0.2s;
+    }
+
+    .tool-btn:hover {
+      background: #f8fafc;
+      border-color: #cbd5e1;
+      transform: translateY(-1px);
+    }
+
+    /* Coordinate tracker badge */
+    .coord-badge {
+      position: absolute;
+      bottom: 8px;
+      right: 8px;
+      background: rgba(15, 23, 42, 0.75);
+      color: #fff;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 0.72rem;
+      font-family: monospace;
+      z-index: 999;
+      pointer-events: none;
+    }
+
+    /* Custom Leaflet Pulsing Pin */
+    .custom-city-pin {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .pin-circle {
+      width: 14px;
+      height: 14px;
+      background-color: #ff6600;
+      border: 2.5px solid #ffffff;
+      border-radius: 50%;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+
+    .pin-circle.capital {
+      background-color: #000080;
+      width: 16px;
+      height: 16px;
+    }
+
+    .custom-city-pin:hover .pin-circle {
+      transform: scale(1.3);
+    }
+
+    .pin-label {
+      position: absolute;
+      top: -18px;
+      white-space: nowrap;
+      font-size: 0.72rem;
+      font-weight: 600;
+      background: rgba(255, 255, 255, 0.9);
+      padding: 1px 5px;
+      border-radius: 4px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+      pointer-events: none;
+      color: #1e293b;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+        padding: 0.6rem 1rem;
+      }
+      .controls-bar {
+        justify-content: space-between;
+      }
+      .search-box input {
+        width: 100%;
+      }
+      .info-card {
+        top: auto;
+        bottom: 0;
+        right: 0;
+        left: 0;
+        width: 100%;
+        max-height: 50%;
+        border-radius: 16px 16px 0 0;
+      }
+      .info-card.collapsed {
+        transform: translateY(110%);
+      }
+      .map-tools {
+        bottom: 50px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Header Navigation -->
+  <header>
+    <div class="brand">
+      <div class="flag-stripe">
+        <span></span>
+        <span><div class="chakra-dot"></div></span>
+        <span></span>
+      </div>
+      <div>
+        <span class="brand-title">Map of India</span>
+        <span class="brand-sub">Republic of India • भारत गणराज्य</span>
+      </div>
+    </div>
+
+    <div class="controls-bar">
+      <!-- Search Box -->
+      <div class="search-box">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="citySearch" placeholder="Search city or capital..." list="citiesList" />
+        <datalist id="citiesList"></datalist>
+      </div>
+
+      <!-- Quick Region Jump Pills -->
+      <div class="region-pills">
+        <button class="pill-btn active" onclick="jumpRegion('all', this)">All India</button>
+        <button class="pill-btn" onclick="jumpRegion('north', this)">North</button>
+        <button class="pill-btn" onclick="jumpRegion('south', this)">South</button>
+        <button class="pill-btn" onclick="jumpRegion('west', this)">West</button>
+        <button class="pill-btn" onclick="jumpRegion('east', this)">East</button>
+        <button class="pill-btn" onclick="jumpRegion('central', this)">Central</button>
+        <button class="pill-btn" onclick="jumpRegion('northeast', this)">North-East</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Map and Info Layout -->
+  <div id="main-container">
+    <div id="map"></div>
+
+    <!-- Floating Info Panel -->
+    <div id="infoCard" class="info-card">
+      <div class="info-header">
+        <div>
+          <span id="infoTag" class="info-tag">National Capital Territory</span>
+          <h2 id="infoTitle" class="info-title">New Delhi</h2>
+        </div>
+        <button class="close-btn" onclick="closeInfoCard()" title="Close details">&times;</button>
+      </div>
+      <p id="infoDesc" class="info-body">
+        The seat of the Government of India and the capital city, known for its rich Mughal and colonial architecture, bustling markets, and historical landmarks like India Gate, Red Fort, and Rashtrapati Bhavan.
+      </p>
+      <div class="info-meta">
+        <div class="meta-item">
+          <div class="meta-label">State / UT</div>
+          <div id="metaState" class="meta-value">Delhi (NCT)</div>
+        </div>
+        <div class="meta-item">
+          <div class="meta-label">Region</div>
+          <div id="metaRegion" class="meta-value">Northern India</div>
+        </div>
+        <div class="meta-item">
+          <div class="meta-label">Known For</div>
+          <div id="metaKnown" class="meta-value">Capital, Monuments</div>
+        </div>
+        <div class="meta-item">
+          <div class="meta-label">Coordinates</div>
+          <div id="metaCoords" class="meta-value">28.61° N, 77.21° E</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Map Tool Buttons -->
+    <div class="map-tools">
+      <button class="tool-btn" onclick="resetToIndia()" title="Reset view to whole India">
+        <span>🇮🇳</span> Reset View
+      </button>
+      <button class="tool-btn" onclick="toggleMapLayer()" id="layerToggleBtn" title="Switch Map Style">
+        <span>🗺️</span> Style: Light
+      </button>
+    </div>
+
+    <!-- Real-time Coordinates Display -->
+    <div id="coordsHUD" class="coord-badge">Lat: 20.59° N | Lng: 78.96° E</div>
+  </div>
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+  <script>
+    // Check if Leaflet CDN loaded successfully
+    if (typeof L === 'undefined') {
+      document.getElementById('map').innerHTML = `
+        <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; text-align: center; padding: 20px; color: #475569;">
+          <div style="font-size: 48px; margin-bottom: 12px;">🇮🇳</div>
+          <h2 style="font-size: 20px; font-weight: 700; color: #1e293b; margin-bottom: 8px;">Map of India</h2>
+          <p style="max-width: 480px; font-size: 14px; line-height: 1.6; color: #64748b; margin-bottom: 16px;">
+            To render the full interactive map tiles and markers, please make sure you are connected to the internet so Leaflet and OpenStreetMap tiles can load.
+          </p>
+          <button onclick="location.reload()" style="background: #FF9933; color: white; border: none; padding: 8px 18px; border-radius: 8px; font-weight: 600; cursor: pointer;">
+            Retry Loading
+          </button>
+        </div>
+      `;
+      throw new Error('Leaflet library failed to load or browser is offline.');
+    }
+
+    // ----------------------------------------------------
+    // 1. DATA: Key Cities & Capitals Across India
+    // ----------------------------------------------------
+    const cities = [
+      {
+        name: "New Delhi",
+        state: "Delhi (NCT)",
+        region: "north",
+        regionName: "Northern India",
+        tag: "National Capital",
+        isCapital: true,
+        lat: 28.6139,
+        lng: 77.2090,
+        knownFor: "Seat of Government, India Gate, Red Fort",
+        desc: "New Delhi is the capital of India and the seat of all three branches of the Government of India. It features grand boulevards designed by Edwin Lutyens, iconic monuments, and rich historical heritage."
+      },
+      {
+        name: "Mumbai",
+        state: "Maharashtra",
+        region: "west",
+        regionName: "Western India",
+        tag: "Financial Capital",
+        isCapital: false,
+        lat: 19.0760,
+        lng: 72.8777,
+        knownFor: "Finance, Bollywood, Gateway of India",
+        desc: "Mumbai is the financial, commercial, and entertainment capital of India. Located on the Konkan coast, it houses India's primary stock exchanges and the thriving Hindi film industry."
+      },
+      {
+        name: "Bengaluru",
+        state: "Karnataka",
+        region: "south",
+        regionName: "Southern India",
+        tag: "Tech Capital",
+        isCapital: true,
+        lat: 12.9716,
+        lng: 77.5946,
+        knownFor: "Silicon Valley of India, IT Hub, Garden City",
+        desc: "Bengaluru is India's premier information technology hub and high-tech center, renowned for pleasant year-round weather, aerospace industry, lush parks, and vibrant startup ecosystem."
+      },
+      {
+        name: "Kolkata",
+        state: "West Bengal",
+        region: "east",
+        regionName: "Eastern India",
+        tag: "Cultural Capital",
+        isCapital: true,
+        lat: 22.5726,
+        lng: 88.3639,
+        knownFor: "Literature, Howrah Bridge, Victoria Memorial",
+        desc: "Kolkata is known for its revolutionary heritage, literary prowess, Victorian architecture, art galleries, and the world-famous Howrah Bridge over the Hooghly River."
+      },
+      {
+        name: "Chennai",
+        state: "Tamil Nadu",
+        region: "south",
+        regionName: "Southern India",
+        tag: "Automotive Hub",
+        isCapital: true,
+        lat: 13.0827,
+        lng: 80.2707,
+        knownFor: "Marina Beach, Carnatic Music, Automobile Hub",
+        desc: "Chennai is famous for its classical Dravidian heritage, Marina Beach (one of the longest natural urban beaches), healthcare tourism, and major automobile manufacturing plants."
+      },
+      {
+        name: "Hyderabad",
+        state: "Telangana",
+        region: "south",
+        regionName: "Southern India",
+        tag: "City of Pearls",
+        isCapital: true,
+        lat: 17.3850,
+        lng: 78.4867,
+        knownFor: "Charminar, Hyderabadi Biryani, HITEC City",
+        desc: "Hyderabad blends historic Charminar and Golconda Fort charm with HITEC City's world-class tech headquarters, biotechnology clusters, and famed culinary traditions."
+      },
+      {
+        name: "Ahmedabad",
+        state: "Gujarat",
+        region: "west",
+        regionName: "Western India",
+        tag: "UNESCO World Heritage City",
+        isCapital: false,
+        lat: 23.0225,
+        lng: 72.5714,
+        knownFor: "Sabarmati Ashram, Textiles, Architecture",
+        desc: "India's first UNESCO World Heritage City, situated on the banks of the Sabarmati River. Famous for Mahatma Gandhi's Ashram, diamond polishing, and vibrant commerce."
+      },
+      {
+        name: "Jaipur",
+        state: "Rajasthan",
+        region: "north",
+        regionName: "Northern India",
+        tag: "Pink City",
+        isCapital: true,
+        lat: 26.9124,
+        lng: 75.7873,
+        knownFor: "Hawa Mahal, Amer Fort, Royal Palaces",
+        desc: "Jaipur forms part of the Golden Triangle tourist circuit, renowned for terracotta pink facades, magnificent hilltop forts, jewelry craft, and royal Rajput palaces."
+      },
+      {
+        name: "Srinagar",
+        state: "Jammu and Kashmir",
+        region: "north",
+        regionName: "Northern India",
+        tag: "Summer Capital",
+        isCapital: true,
+        lat: 34.0837,
+        lng: 74.7973,
+        knownFor: "Dal Lake, Shikaras, Mughal Gardens",
+        desc: "Nestled in the heart of the Kashmir Valley, Srinagar is world-famous for picturesque Dal Lake, traditional wooden houseboats, vibrant floating flower markets, and Mughal gardens."
+      },
+      {
+        name: "Chandigarh",
+        state: "Punjab & Haryana",
+        region: "north",
+        regionName: "Northern India",
+        tag: "Planned City",
+        isCapital: true,
+        lat: 30.7333,
+        lng: 76.7794,
+        knownFor: "Le Corbusier Architecture, Rock Garden",
+        desc: "A union territory that serves as the joint capital of Punjab and Haryana, celebrated globally for modern urban planning by Le Corbusier and the whimsical Nek Chand Rock Garden."
+      },
+      {
+        name: "Lucknow",
+        state: "Uttar Pradesh",
+        region: "north",
+        regionName: "Northern India",
+        tag: "City of Nawabs",
+        isCapital: true,
+        lat: 26.8467,
+        lng: 80.9462,
+        knownFor: "Bara Imambara, Chikankari Embroidery, Awadhi Cuisine",
+        desc: "The heart of Awadhi culture and courtly elegance, recognized for sophisticated poetry, distinctive architecture like Bara Imambara, delicate Chikan embroidery, and kebabs."
+      },
+      {
+        name: "Varanasi",
+        state: "Uttar Pradesh",
+        region: "north",
+        regionName: "Northern India",
+        tag: "Spiritual Capital",
+        isCapital: false,
+        lat: 25.3176,
+        lng: 82.9739,
+        knownFor: "Ghats of Ganges, Kashi Vishwanath, Silk Sarees",
+        desc: "One of the world's oldest continually inhabited cities, sacred to Hinduism, Buddhism, and Jainism. Thousands gather along the Ganga Ghats each evening for the sacred Ganga Aarti."
+      },
+      {
+        name: "Bhopal",
+        state: "Madhya Pradesh",
+        region: "central",
+        regionName: "Central India",
+        tag: "City of Lakes",
+        isCapital: true,
+        lat: 23.2599,
+        lng: 77.4126,
+        knownFor: "Upper Lake, Taj-ul-Masajid, Sanchi Gateway",
+        desc: "The capital of Madhya Pradesh, known as the City of Lakes with verdant natural landscapes, grand mosques, and close proximity to the ancient Buddhist stupas of Sanchi."
+      },
+      {
+        name: "Patna",
+        state: "Bihar",
+        region: "east",
+        regionName: "Eastern India",
+        tag: "Ancient Pataliputra",
+        isCapital: true,
+        lat: 25.5941,
+        lng: 85.1376,
+        knownFor: "Historic Capital of Maurya Empire, Golghar",
+        desc: "Flanked along the southern bank of the holy Ganges, ancient Pataliputra was the cradle of the Maurya and Gupta empires, and birthplace of Guru Gobind Singh Ji."
+      },
+      {
+        name: "Bhubaneswar",
+        state: "Odisha",
+        region: "east",
+        regionName: "Eastern India",
+        tag: "Temple City",
+        isCapital: true,
+        lat: 20.2961,
+        lng: 85.8245,
+        knownFor: "Lingaraj Temple, Kalinga Architecture, Smart City",
+        desc: "Renowned as the Temple City of India with over 700 historic Kalinga architectural temples, now emerging as one of eastern India's premier IT and educational destinations."
+      },
+      {
+        name: "Guwahati",
+        state: "Assam",
+        region: "northeast",
+        regionName: "North-Eastern India",
+        tag: "Gateway to the North-East",
+        isCapital: false,
+        lat: 26.1445,
+        lng: 91.7362,
+        knownFor: "Kamakhya Temple, Brahmaputra River, Tea",
+        desc: "The premier metropolis of North-East India situated on the banks of the majestic Brahmaputra River, renowned for the revered Kamakhya Temple and rich Assam tea plantations."
+      },
+      {
+        name: "Shillong",
+        state: "Meghalaya",
+        region: "northeast",
+        regionName: "North-Eastern India",
+        tag: "Scotland of the East",
+        isCapital: true,
+        lat: 25.5788,
+        lng: 91.8933,
+        knownFor: "Rolling Hills, Waterfalls, Music Culture",
+        desc: "The charming capital of Meghalaya set amidst pine-clad peaks, crystal clear rivers, vibrant indie music scenes, and living root bridges in surrounding hills."
+      },
+      {
+        name: "Kochi",
+        state: "Kerala",
+        region: "south",
+        regionName: "Southern India",
+        tag: "Queen of the Arabian Sea",
+        isCapital: false,
+        lat: 9.9312,
+        lng: 76.2673,
+        knownFor: "Chinese Fishing Nets, Spice Trade, Fort Kochi",
+        desc: "A historic coastal port city that was the center of international spice trade for centuries, famous for picturesque cantilevered Chinese fishing nets and colonial Fort Kochi."
+      },
+      {
+        name: "Panaji",
+        state: "Goa",
+        region: "west",
+        regionName: "Western India",
+        tag: "Coastal Capital",
+        isCapital: true,
+        lat: 15.4909,
+        lng: 73.8278,
+        knownFor: "Fontainhas Latin Quarter, Mandovi River, Beaches",
+        desc: "Situated on the banks of the Mandovi River, Panaji charms visitors with terracotta-tiled roofs, Portuguese Baroque churches, and the Latin Quarter of Fontainhas."
+      },
+      {
+        name: "Shimla",
+        state: "Himachal Pradesh",
+        region: "north",
+        regionName: "Northern India",
+        tag: "Queen of the Hills",
+        isCapital: true,
+        lat: 31.1048,
+        lng: 77.1734,
+        knownFor: "Mall Road, Kalka-Shimla Toy Train, Snow Peaks",
+        desc: "Former summer capital of British India, set amid cedar and pine forests with panoramic views of the snow-capped Himalayan ranges and the UNESCO-listed toy train."
+      }
+    ];
+
+    // Populate search datalist
+    const datalist = document.getElementById('citiesList');
+    cities.forEach(city => {
+      const opt = document.createElement('option');
+      opt.value = `${city.name}, ${city.state}`;
+      datalist.appendChild(opt);
+    });
+
+    // ----------------------------------------------------
+    // 2. MAP INITIALIZATION (Leaflet)
+    // ----------------------------------------------------
+    const INDIA_CENTER = [22.5, 82.5]; // Balanced view of India
+    const DEFAULT_ZOOM = 5;
+
+    // Bounds covering India
+    const INDIA_BOUNDS = [
+      [6.0, 68.0],   // Southwest corner
+      [37.5, 97.5]   // Northeast corner
+    ];
+
+    // Regional View Presets
+    const REGIONS = {
+      all: { center: [22.5, 82.5], zoom: 5 },
+      north: { center: [30.5, 77.5], zoom: 6 },
+      south: { center: [13.0, 77.5], zoom: 6 },
+      west: { center: [21.0, 73.5], zoom: 6 },
+      east: { center: [23.5, 86.5], zoom: 6 },
+      central: { center: [23.2, 79.5], zoom: 6 },
+      northeast: { center: [26.2, 92.5], zoom: 6.5 }
+    };
+
+    // Tile Layer Styles
+    const tileLayers = {
+      osm: L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 18,
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+      }),
+      cartoLight: L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+        maxZoom: 19,
+        attribution: '&copy; <a href="https://carto.com/">CARTO</a> &copy; OpenStreetMap contributors'
+      }),
+      cartoDark: L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+        maxZoom: 19,
+        attribution: '&copy; <a href="https://carto.com/">CARTO</a> &copy; OpenStreetMap contributors'
+      })
+    };
+
+    let currentLayerKey = 'cartoLight';
+
+    // Initialize Map
+    const map = L.map('map', {
+      center: INDIA_CENTER,
+      zoom: DEFAULT_ZOOM,
+      minZoom: 4,
+      maxZoom: 17,
+      layers: [tileLayers.cartoLight],
+      zoomControl: false // Custom placement
+    });
+
+    // Zoom control at bottom right
+    L.control.zoom({ position: 'bottomright' }).addTo(map);
+
+    // ----------------------------------------------------
+    // 3. MARKERS & INTERACTION
+    // ----------------------------------------------------
+    const markersMap = new Map();
+
+    function createCustomPin(city) {
+      const isCap = city.isCapital;
+      const html = `
+        <div class="custom-city-pin" title="${city.name}">
+          <div class="pin-circle ${isCap ? 'capital' : ''}"></div>
+          <div class="pin-label">${city.name}</div>
+        </div>
+      `;
+      return L.divIcon({
+        className: 'custom-pin-wrapper',
+        html: html,
+        iconSize: [20, 20],
+        iconAnchor: [10, 10]
+      });
+    }
+
+    cities.forEach(city => {
+      const marker = L.marker([city.lat, city.lng], {
+        icon: createCustomPin(city)
+      }).addTo(map);
+
+      // Popup content
+      const popupContent = `
+        <div style="font-family: inherit; font-size: 13px;">
+          <strong style="font-size: 14px; color: #1e293b;">${city.name}</strong><br>
+          <span style="color: #64748b; font-size: 11px;">${city.state}</span>
+          <p style="margin: 6px 0 0; color: #334155;">${city.knownFor}</p>
+        </div>
+      `;
+      marker.bindPopup(popupContent, { offset: [0, -10] });
+
+      // Click event updates info card
+      marker.on('click', () => {
+        showCityDetails(city);
+      });
+
+      markersMap.set(city.name.toLowerCase(), { marker, data: city });
+    });
+
+    // ----------------------------------------------------
+    // 4. UI FUNCTIONS
+    // ----------------------------------------------------
+    function showCityDetails(city) {
+      document.getElementById('infoTitle').textContent = city.name;
+      document.getElementById('infoTag').textContent = city.tag;
+      document.getElementById('infoDesc').textContent = city.desc;
+      document.getElementById('metaState').textContent = city.state;
+      document.getElementById('metaRegion').textContent = city.regionName;
+      document.getElementById('metaKnown').textContent = city.knownFor;
+      document.getElementById('metaCoords').textContent = `${city.lat.toFixed(2)}° N, ${city.lng.toFixed(2)}° E`;
+
+      const card = document.getElementById('infoCard');
+      card.classList.remove('collapsed');
+    }
+
+    function closeInfoCard() {
+      document.getElementById('infoCard').classList.add('collapsed');
+    }
+
+    function resetToIndia() {
+      map.flyTo(INDIA_CENTER, DEFAULT_ZOOM, { duration: 1.2 });
+      document.querySelectorAll('.pill-btn').forEach(b => b.classList.remove('active'));
+      document.querySelector('.pill-btn').classList.add('active');
+    }
+
+    function jumpRegion(regionKey, btnElement) {
+      document.querySelectorAll('.pill-btn').forEach(b => b.classList.remove('active'));
+      if (btnElement) btnElement.classList.add('active');
+
+      const target = REGIONS[regionKey] || REGIONS.all;
+      map.flyTo(target.center, target.zoom, { duration: 1.2 });
+    }
+
+    // Toggle Map Themes (Voyager Light -> OSM Standard -> Dark)
+    function toggleMapLayer() {
+      map.removeLayer(tileLayers[currentLayerKey]);
+      const btn = document.getElementById('layerToggleBtn');
+
+      if (currentLayerKey === 'cartoLight') {
+        currentLayerKey = 'osm';
+        btn.innerHTML = '<span>🗺️</span> Style: OSM';
+      } else if (currentLayerKey === 'osm') {
+        currentLayerKey = 'cartoDark';
+        btn.innerHTML = '<span>🌙</span> Style: Dark';
+      } else {
+        currentLayerKey = 'cartoLight';
+        btn.innerHTML = '<span>🗺️</span> Style: Light';
+      }
+
+      map.addLayer(tileLayers[currentLayerKey]);
+    }
+
+    // City Search Handler
+    const searchInput = document.getElementById('citySearch');
+    searchInput.addEventListener('input', function(e) {
+      const query = e.target.value.toLowerCase().trim();
+      if (!query) return;
+
+      const cityName = query.split(',')[0].trim();
+      const match = cities.find(c => 
+        c.name.toLowerCase() === cityName || 
+        c.name.toLowerCase().startsWith(cityName) ||
+        c.state.toLowerCase().includes(cityName)
+      );
+
+      if (match) {
+        map.flyTo([match.lat, match.lng], 9, { duration: 1.2 });
+        showCityDetails(match);
+        const item = markersMap.get(match.name.toLowerCase());
+        if (item) item.marker.openPopup();
+      }
+    });
+
+    // Real-time Coordinate HUD Tracker
+    const coordsHUD = document.getElementById('coordsHUD');
+    map.on('mousemove', function(e) {
+      const lat = e.latlng.lat.toFixed(2);
+      const lng = e.latlng.lng.toFixed(2);
+      const latDir = lat >= 0 ? 'N' : 'S';
+      const lngDir = lng >= 0 ? 'E' : 'W';
+      coordsHUD.textContent = `Lat: ${Math.abs(lat)}° ${latDir} | Lng: ${Math.abs(lng)}° ${lngDir}`;
+    });
+
+    // Initial default focus
+    const defaultCity = cities[0]; // New Delhi
+    showCityDetails(defaultCity);
+  </script>
+</body>
+</html>

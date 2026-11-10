@@ -1,0 +1,47 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1080
+PlayResY: 1920
+WrapStyle: 0
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: PixarShorts,Arial,66,&H0000FFFF,&H000000FF,&H00000000,&H80000000,-1,0,0,0,100,100,0,0,1,6,3,2,60,60,450,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.05,0:00:00.65,PixarShorts,,0,0,0,,IN A DEAD
+Dialogue: 0,0:00:00.65,0:00:01.76,PixarShorts,,0,0,0,,WORLD OF RUSTED
+Dialogue: 0,0:00:01.76,0:00:03.14,PixarShorts,,0,0,0,,STEEL AND SILENCE,
+Dialogue: 0,0:00:03.14,0:00:03.99,PixarShorts,,0,0,0,,A TINY SCRAP
+Dialogue: 0,0:00:03.99,0:00:05.11,PixarShorts,,0,0,0,,ROBOT NAMED PIP
+Dialogue: 0,0:00:05.11,0:00:06.74,PixarShorts,,0,0,0,,FOUND THE IMPOSSIBLE.
+Dialogue: 0,0:00:06.74,0:00:08.19,PixarShorts,,0,0,0,,BURIED BENEATH TONS
+Dialogue: 0,0:00:08.19,0:00:09.04,PixarShorts,,0,0,0,,OF COLD IRON
+Dialogue: 0,0:00:09.04,0:00:09.90,PixarShorts,,0,0,0,,WAS A SINGLE
+Dialogue: 0,0:00:09.90,0:00:11.69,PixarShorts,,0,0,0,,FRAGILE SPROUT, GLOWING
+Dialogue: 0,0:00:11.69,0:00:13.65,PixarShorts,,0,0,0,,WITH BIOLUMINESCENT GREEN
+Dialogue: 0,0:00:13.65,0:00:14.07,PixarShorts,,0,0,0,,LIFE.
+Dialogue: 0,0:00:14.07,0:00:15.41,PixarShorts,,0,0,0,,WITH GENTLE HANDS,
+Dialogue: 0,0:00:15.41,0:00:16.41,PixarShorts,,0,0,0,,PIP CARRIED IT
+Dialogue: 0,0:00:16.41,0:00:17.41,PixarShorts,,0,0,0,,TO THE HIGHEST
+Dialogue: 0,0:00:17.41,0:00:18.66,PixarShorts,,0,0,0,,PEAK, PLANTING IT
+Dialogue: 0,0:00:18.66,0:00:19.58,PixarShorts,,0,0,0,,INTO THE RICH
+Dialogue: 0,0:00:19.58,0:00:20.83,PixarShorts,,0,0,0,,EARTH AT SUNRISE.
+Dialogue: 0,0:00:20.83,0:00:21.79,PixarShorts,,0,0,0,,AND WITH ONE
+Dialogue: 0,0:00:21.79,0:00:22.74,PixarShorts,,0,0,0,,WARM DROP OF
+Dialogue: 0,0:00:22.74,0:00:24.74,PixarShorts,,0,0,0,,DEVOTION, LIFE EXPLODED
+Dialogue: 0,0:00:24.74,0:00:25.98,PixarShorts,,0,0,0,,ACROSS THE GRAY
+Dialogue: 0,0:00:25.98,0:00:26.74,PixarShorts,,0,0,0,,HORIZON.
+Dialogue: 0,0:00:26.74,0:00:27.94,PixarShorts,,0,0,0,,A MASSIVE GOLDEN
+Dialogue: 0,0:00:27.94,0:00:29.47,PixarShorts,,0,0,0,,BLOSSOM ERUPTED INTO
+Dialogue: 0,0:00:29.47,0:00:30.75,PixarShorts,,0,0,0,,THE SKY, COVERING
+Dialogue: 0,0:00:30.75,0:00:31.78,PixarShorts,,0,0,0,,THE COLD WORLD
+Dialogue: 0,0:00:31.78,0:00:33.49,PixarShorts,,0,0,0,,IN VIBRANT WILDFLOWERS
+Dialogue: 0,0:00:33.49,0:00:34.25,PixarShorts,,0,0,0,,AND LIGHT.
+Dialogue: 0,0:00:34.25,0:00:35.69,PixarShorts,,0,0,0,,PROVING THAT EVEN
+Dialogue: 0,0:00:35.69,0:00:36.45,PixarShorts,,0,0,0,,IN A WORLD
+Dialogue: 0,0:00:36.45,0:00:37.41,PixarShorts,,0,0,0,,OF RUST, THE
+Dialogue: 0,0:00:37.41,0:00:38.85,PixarShorts,,0,0,0,,SMALLEST SPARK OF
+Dialogue: 0,0:00:38.85,0:00:39.99,PixarShorts,,0,0,0,,LOVE CAN BLOOM
+Dialogue: 0,0:00:39.99,0:00:41.62,PixarShorts,,0,0,0,,AN ENTIRE UNIVERSE.

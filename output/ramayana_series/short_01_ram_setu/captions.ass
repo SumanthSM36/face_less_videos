@@ -1,0 +1,47 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1080
+PlayResY: 1920
+ScaledBorderAndShadow: yes
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Default,Impact,82,&H0000FFFF,&H000000FF,&H00000000,&H80000000,-1,0,0,0,100,100,2,0,1,6,2,2,60,60,400,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.10,0:00:01.11,Default,,0,0,0,,HOW DID A
+Dialogue: 0,0:00:01.11,0:00:02.11,Default,,0,0,0,,THIRTY-MILE BRIDGE OF
+Dialogue: 0,0:00:02.11,0:00:03.12,Default,,0,0,0,,FLOATING STONES CROSS
+Dialogue: 0,0:00:03.12,0:00:04.13,Default,,0,0,0,,THE OCEAN THOUSANDS
+Dialogue: 0,0:00:04.13,0:00:05.13,Default,,0,0,0,,OF YEARS AGO?
+Dialogue: 0,0:00:05.08,0:00:06.22,Default,,0,0,0,,IN THE RAMAYANA,
+Dialogue: 0,0:00:06.22,0:00:07.36,Default,,0,0,0,,THE VANARA ARCHITECTS
+Dialogue: 0,0:00:07.36,0:00:08.50,Default,,0,0,0,,NALA AND NILA
+Dialogue: 0,0:00:08.50,0:00:09.64,Default,,0,0,0,,CARVED SACRED SYMBOLS
+Dialogue: 0,0:00:09.64,0:00:10.78,Default,,0,0,0,,INTO POROUS LIMESTONE
+Dialogue: 0,0:00:10.78,0:00:11.92,Default,,0,0,0,,BOULDERS, CAUSING THEM
+Dialogue: 0,0:00:11.92,0:00:13.06,Default,,0,0,0,,TO FLOAT UPON
+Dialogue: 0,0:00:13.06,0:00:14.19,Default,,0,0,0,,THE DEEP SEA.
+Dialogue: 0,0:00:14.19,0:00:15.49,Default,,0,0,0,,MODERN SATELLITE IMAGING
+Dialogue: 0,0:00:15.49,0:00:16.79,Default,,0,0,0,,BY NASA REVEALED
+Dialogue: 0,0:00:16.79,0:00:18.08,Default,,0,0,0,,A THIRTY-KILOMETER CHAIN
+Dialogue: 0,0:00:18.08,0:00:19.38,Default,,0,0,0,,OF NATURAL LIMESTONE
+Dialogue: 0,0:00:19.38,0:00:20.68,Default,,0,0,0,,SHOALS CONNECTING INDIA
+Dialogue: 0,0:00:20.68,0:00:21.97,Default,,0,0,0,,AND SRI LANKA.
+Dialogue: 0,0:00:21.97,0:00:23.03,Default,,0,0,0,,GEOLOGICAL CORE SAMPLES
+Dialogue: 0,0:00:23.03,0:00:24.09,Default,,0,0,0,,CONFIRMED THE CORALS
+Dialogue: 0,0:00:24.09,0:00:25.15,Default,,0,0,0,,ARE LESS THAN
+Dialogue: 0,0:00:25.15,0:00:26.21,Default,,0,0,0,,FOUR THOUSAND YEARS
+Dialogue: 0,0:00:26.21,0:00:27.27,Default,,0,0,0,,OLD, BUT THE
+Dialogue: 0,0:00:27.27,0:00:28.34,Default,,0,0,0,,UNDERLYING BOULDERS DATE
+Dialogue: 0,0:00:28.34,0:00:29.40,Default,,0,0,0,,BACK OVER SEVEN
+Dialogue: 0,0:00:29.40,0:00:30.46,Default,,0,0,0,,THOUSAND YEARS.
+Dialogue: 0,0:00:30.46,0:00:31.61,Default,,0,0,0,,MEANING ANCIENT ENGINEERING
+Dialogue: 0,0:00:31.61,0:00:32.76,Default,,0,0,0,,AND SACRED LORE
+Dialogue: 0,0:00:32.76,0:00:33.92,Default,,0,0,0,,MAY BE RECOUNTING
+Dialogue: 0,0:00:33.92,0:00:35.07,Default,,0,0,0,,THE EXACT SAME
+Dialogue: 0,0:00:35.07,0:00:36.23,Default,,0,0,0,,HISTORICAL MARVEL...
+Dialogue: 0,0:00:36.23,0:00:37.16,Default,,0,0,0,,WHICH IS WHY
+Dialogue: 0,0:00:37.16,0:00:38.10,Default,,0,0,0,,THE WORLD STILL
+Dialogue: 0,0:00:38.10,0:00:39.04,Default,,0,0,0,,WONDERS...

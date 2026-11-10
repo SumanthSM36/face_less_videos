@@ -1,0 +1,50 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1080
+PlayResY: 1920
+WrapStyle: 0
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: PixarShorts,Arial,66,&H0000FFFF,&H000000FF,&H00000000,&H80000000,-1,0,0,0,100,100,0,0,1,6,3,2,60,60,450,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.05,0:00:01.27,PixarShorts,,0,0,0,,WANDERING THROUGH A
+Dialogue: 0,0:00:01.27,0:00:02.35,PixarShorts,,0,0,0,,WASTELAND OF COLD
+Dialogue: 0,0:00:02.35,0:00:03.51,PixarShorts,,0,0,0,,IRON, PIP SEARCHED
+Dialogue: 0,0:00:03.51,0:00:04.37,PixarShorts,,0,0,0,,FOR THE ANSWER
+Dialogue: 0,0:00:04.37,0:00:05.38,PixarShorts,,0,0,0,,THAT HAUNTED HIS
+Dialogue: 0,0:00:05.38,0:00:06.53,PixarShorts,,0,0,0,,CIRCUITS: WHO MADE
+Dialogue: 0,0:00:06.53,0:00:07.47,PixarShorts,,0,0,0,,ME... AND WHERE
+Dialogue: 0,0:00:07.47,0:00:08.19,PixarShorts,,0,0,0,,DID THEY GO?
+Dialogue: 0,0:00:08.19,0:00:09.69,PixarShorts,,0,0,0,,UNTIL BURIED BENEATH
+Dialogue: 0,0:00:09.69,0:00:10.61,PixarShorts,,0,0,0,,THE RUINS, HE
+Dialogue: 0,0:00:10.61,0:00:12.36,PixarShorts,,0,0,0,,UNCOVERED AN IMPOSSIBLE
+Dialogue: 0,0:00:12.36,0:00:13.44,PixarShorts,,0,0,0,,SPARK: A SINGLE
+Dialogue: 0,0:00:13.44,0:00:15.19,PixarShorts,,0,0,0,,FRAGILE SPROUT, GLOWING
+Dialogue: 0,0:00:15.19,0:00:17.10,PixarShorts,,0,0,0,,WITH BIOLUMINESCENT LIFE.
+Dialogue: 0,0:00:17.10,0:00:18.43,PixarShorts,,0,0,0,,AND RESTING BESIDE
+Dialogue: 0,0:00:18.43,0:00:19.67,PixarShorts,,0,0,0,,IT WAS HUMANITY'S
+Dialogue: 0,0:00:19.67,0:00:20.91,PixarShorts,,0,0,0,,FINAL MESSAGE: TO
+Dialogue: 0,0:00:20.91,0:00:22.49,PixarShorts,,0,0,0,,WHOEVER FINDS THIS...
+Dialogue: 0,0:00:22.49,0:00:23.31,PixarShorts,,0,0,0,,TAKE CARE OF
+Dialogue: 0,0:00:23.31,0:00:24.31,PixarShorts,,0,0,0,,WHAT REMAINS.
+Dialogue: 0,0:00:24.31,0:00:25.22,PixarShorts,,0,0,0,,PIP LOOKED DOWN
+Dialogue: 0,0:00:25.22,0:00:26.21,PixarShorts,,0,0,0,,WITH GENTLE AWE.
+Dialogue: 0,0:00:26.21,0:00:26.79,PixarShorts,,0,0,0,,HE WAS NOT
+Dialogue: 0,0:00:26.79,0:00:27.51,PixarShorts,,0,0,0,,ABANDONED.
+Dialogue: 0,0:00:27.51,0:00:28.58,PixarShorts,,0,0,0,,HE WAS CHOSEN.
+Dialogue: 0,0:00:28.58,0:00:29.16,PixarShorts,,0,0,0,,TO BE THE
+Dialogue: 0,0:00:29.16,0:00:30.05,PixarShorts,,0,0,0,,GUARDIAN OF A
+Dialogue: 0,0:00:30.05,0:00:31.19,PixarShorts,,0,0,0,,BRAND NEW WORLD.
+Dialogue: 0,0:00:31.19,0:00:32.07,PixarShorts,,0,0,0,,AND WITH ONE
+Dialogue: 0,0:00:32.07,0:00:32.94,PixarShorts,,0,0,0,,WARM DROP OF
+Dialogue: 0,0:00:32.94,0:00:34.77,PixarShorts,,0,0,0,,DEVOTION, LIFE EXPLODED
+Dialogue: 0,0:00:34.77,0:00:36.25,PixarShorts,,0,0,0,,ACROSS THE HORIZON,
+Dialogue: 0,0:00:36.25,0:00:37.47,PixarShorts,,0,0,0,,BLOOMING INTO AN
+Dialogue: 0,0:00:37.47,0:00:38.52,PixarShorts,,0,0,0,,ENDLESS SEA OF
+Dialogue: 0,0:00:38.52,0:00:39.57,PixarShorts,,0,0,0,,GOLDEN LIGHT.
+Dialogue: 0,0:00:39.57,0:00:40.87,PixarShorts,,0,0,0,,PROVING THAT LOVE
+Dialogue: 0,0:00:40.87,0:00:42.34,PixarShorts,,0,0,0,,WILL ALWAYS OUTLIVE
+Dialogue: 0,0:00:42.34,0:00:42.78,PixarShorts,,0,0,0,,RUST.

@@ -1,0 +1,4 @@
+file '/Users/sumanth/Downloads/New/output/ramayana_series/short_04_kumbhakarna_sleep/clip_01.mp4'
+file '/Users/sumanth/Downloads/New/output/ramayana_series/short_04_kumbhakarna_sleep/clip_02.mp4'
+file '/Users/sumanth/Downloads/New/output/ramayana_series/short_04_kumbhakarna_sleep/clip_03.mp4'
+file '/Users/sumanth/Downloads/New/output/ramayana_series/short_04_kumbhakarna_sleep/clip_04.mp4'

@@ -1,0 +1,42 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1080
+PlayResY: 1920
+WrapStyle: 0
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: LighthouseDefault,Arial,72,&H0000FFFF,&H000000FF,&H00000000,&H80000000,-1,0,0,0,100,100,0,0,1,6,3,2,60,60,440,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.10,0:00:00.71,LighthouseDefault,,0,0,0,,AT THE EDGE
+Dialogue: 0,0:00:00.71,0:00:01.39,LighthouseDefault,,0,0,0,,OF THE WORLD
+Dialogue: 0,0:00:01.39,0:00:02.49,LighthouseDefault,,0,0,0,,STOOD A LIGHTHOUSE
+Dialogue: 0,0:00:02.49,0:00:03.51,LighthouseDefault,,0,0,0,,THAT NEVER WARNED
+Dialogue: 0,0:00:03.51,0:00:04.40,LighthouseDefault,,0,0,0,,SHIPS OF ROCKS.
+Dialogue: 0,0:00:04.35,0:00:05.87,LighthouseDefault,,0,0,0,,IT GUIDED TRAVELERS
+Dialogue: 0,0:00:05.87,0:00:07.30,LighthouseDefault,,0,0,0,,BETWEEN GALAXIES.
+Dialogue: 0,0:00:07.30,0:00:08.52,LighthouseDefault,,0,0,0,,EVERY CENTURY, ITS
+Dialogue: 0,0:00:08.52,0:00:09.97,LighthouseDefault,,0,0,0,,ANCIENT LANTERN WOULD
+Dialogue: 0,0:00:09.97,0:00:10.58,LighthouseDefault,,0,0,0,,FADE TO AN
+Dialogue: 0,0:00:10.58,0:00:11.04,LighthouseDefault,,0,0,0,,EMBER.
+Dialogue: 0,0:00:11.04,0:00:11.91,LighthouseDefault,,0,0,0,,AN OLD KEEPER
+Dialogue: 0,0:00:11.91,0:00:13.34,LighthouseDefault,,0,0,0,,CLIMBED TEN THOUSAND
+Dialogue: 0,0:00:13.34,0:00:14.84,LighthouseDefault,,0,0,0,,BRASS STEPS, CARRYING
+Dialogue: 0,0:00:14.84,0:00:15.71,LighthouseDefault,,0,0,0,,A SINGLE VIAL
+Dialogue: 0,0:00:15.71,0:00:16.66,LighthouseDefault,,0,0,0,,OF STARLIGHT.
+Dialogue: 0,0:00:16.66,0:00:17.59,LighthouseDefault,,0,0,0,,WHEN HE POURED
+Dialogue: 0,0:00:17.59,0:00:18.29,LighthouseDefault,,0,0,0,,IT INTO THE
+Dialogue: 0,0:00:18.29,0:00:19.30,LighthouseDefault,,0,0,0,,CRYSTAL LENS, A
+Dialogue: 0,0:00:19.30,0:00:20.39,LighthouseDefault,,0,0,0,,GOLDEN BEAM TORE
+Dialogue: 0,0:00:20.39,0:00:21.40,LighthouseDefault,,0,0,0,,OPEN THE FABRIC
+Dialogue: 0,0:00:21.40,0:00:22.02,LighthouseDefault,,0,0,0,,OF SPACE.
+Dialogue: 0,0:00:22.02,0:00:22.86,LighthouseDefault,,0,0,0,,AND FROM THE
+Dialogue: 0,0:00:22.86,0:00:24.28,LighthouseDefault,,0,0,0,,OTHER SIDE, SOMEONE
+Dialogue: 0,0:00:24.28,0:00:25.45,LighthouseDefault,,0,0,0,,WAS WAVING BACK.
+Dialogue: 0,0:00:25.45,0:00:26.61,LighthouseDefault,,0,0,0,,BECAUSE THE BEACON
+Dialogue: 0,0:00:26.61,0:00:27.56,LighthouseDefault,,0,0,0,,WAS NEVER MEANT
+Dialogue: 0,0:00:27.56,0:00:28.29,LighthouseDefault,,0,0,0,,FOR THE SEA.
+Dialogue: 0,0:00:28.29,0:00:29.28,LighthouseDefault,,0,0,0,,IT WAS MEANT
+Dialogue: 0,0:00:29.28,0:00:30.47,LighthouseDefault,,0,0,0,,FOR THE STARS.

@@ -1,0 +1,58 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1080
+PlayResY: 1920
+WrapStyle: 0
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: PixarShorts,Arial,66,&H0000FFFF,&H000000FF,&H00000000,&H80000000,-1,0,0,0,100,100,0,0,1,6,3,2,60,60,450,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.05,0:00:01.30,PixarShorts,,0,0,0,,WANDERING THROUGH A
+Dialogue: 0,0:00:01.30,0:00:02.10,PixarShorts,,0,0,0,,WORLD OF DEAD
+Dialogue: 0,0:00:02.10,0:00:03.21,PixarShorts,,0,0,0,,RUST, PIP STEPPED
+Dialogue: 0,0:00:03.21,0:00:04.16,PixarShorts,,0,0,0,,INTO A TOWERING
+Dialogue: 0,0:00:04.16,0:00:05.93,PixarShorts,,0,0,0,,FORGOTTEN LIBRARY, SEEKING
+Dialogue: 0,0:00:05.93,0:00:06.81,PixarShorts,,0,0,0,,THE ONE ANSWER
+Dialogue: 0,0:00:06.81,0:00:07.84,PixarShorts,,0,0,0,,THAT HAUNTED HIS
+Dialogue: 0,0:00:07.84,0:00:09.02,PixarShorts,,0,0,0,,CIRCUITS: WHO MADE
+Dialogue: 0,0:00:09.02,0:00:09.98,PixarShorts,,0,0,0,,ME... AND WHERE
+Dialogue: 0,0:00:09.98,0:00:10.71,PixarShorts,,0,0,0,,DID THEY GO?
+Dialogue: 0,0:00:10.71,0:00:12.54,PixarShorts,,0,0,0,,BENEATH CATHEDRAL ARCHES
+Dialogue: 0,0:00:12.54,0:00:13.88,PixarShorts,,0,0,0,,CHOKED WITH VINES,
+Dialogue: 0,0:00:13.88,0:00:14.88,PixarShorts,,0,0,0,,HE GENTLY BLEW
+Dialogue: 0,0:00:14.88,0:00:15.71,PixarShorts,,0,0,0,,THE DUST OFF
+Dialogue: 0,0:00:15.71,0:00:17.04,PixarShorts,,0,0,0,,AN ANCIENT PICTURE
+Dialogue: 0,0:00:17.04,0:00:18.46,PixarShorts,,0,0,0,,BOOK, SHOWING GREEN
+Dialogue: 0,0:00:18.46,0:00:19.96,PixarShorts,,0,0,0,,TREES, LAUGHTER, AND
+Dialogue: 0,0:00:19.96,0:00:20.46,PixarShorts,,0,0,0,,A SKY OF
+Dialogue: 0,0:00:20.46,0:00:21.62,PixarShorts,,0,0,0,,BOUNDLESS BLUE.
+Dialogue: 0,0:00:21.62,0:00:22.35,PixarShorts,,0,0,0,,IN THE DARK,
+Dialogue: 0,0:00:22.35,0:00:23.29,PixarShorts,,0,0,0,,PIP PLUGGED HIS
+Dialogue: 0,0:00:23.29,0:00:24.30,PixarShorts,,0,0,0,,RUSTED CORD INTO
+Dialogue: 0,0:00:24.30,0:00:25.68,PixarShorts,,0,0,0,,A FLICKERING TERMINAL
+Dialogue: 0,0:00:25.68,0:00:26.18,PixarShorts,,0,0,0,,SCREEN.
+Dialogue: 0,0:00:26.18,0:00:27.28,PixarShorts,,0,0,0,,STATIC GAVE WAY
+Dialogue: 0,0:00:27.28,0:00:27.95,PixarShorts,,0,0,0,,TO A FINAL
+Dialogue: 0,0:00:27.95,0:00:29.30,PixarShorts,,0,0,0,,HUMAN MESSAGE FROM
+Dialogue: 0,0:00:29.30,0:00:30.65,PixarShorts,,0,0,0,,CENTURIES PAST: TO
+Dialogue: 0,0:00:30.65,0:00:32.25,PixarShorts,,0,0,0,,WHOEVER FINDS THIS...
+Dialogue: 0,0:00:32.25,0:00:33.10,PixarShorts,,0,0,0,,TAKE CARE OF
+Dialogue: 0,0:00:33.10,0:00:34.11,PixarShorts,,0,0,0,,WHAT REMAINS.
+Dialogue: 0,0:00:34.11,0:00:35.22,PixarShorts,,0,0,0,,PIP LOOKED DOWN
+Dialogue: 0,0:00:35.22,0:00:35.99,PixarShorts,,0,0,0,,AT THE TINY
+Dialogue: 0,0:00:35.99,0:00:37.70,PixarShorts,,0,0,0,,GLOWING SPROUT NESTLED
+Dialogue: 0,0:00:37.70,0:00:38.98,PixarShorts,,0,0,0,,SAFELY INSIDE HIS
+Dialogue: 0,0:00:38.98,0:00:40.01,PixarShorts,,0,0,0,,CHEST CASING.
+Dialogue: 0,0:00:40.01,0:00:40.58,PixarShorts,,0,0,0,,HE WAS NOT
+Dialogue: 0,0:00:40.58,0:00:41.29,PixarShorts,,0,0,0,,ABANDONED.
+Dialogue: 0,0:00:41.29,0:00:42.34,PixarShorts,,0,0,0,,HE WAS CHOSEN.
+Dialogue: 0,0:00:42.34,0:00:42.87,PixarShorts,,0,0,0,,TO BE THE
+Dialogue: 0,0:00:42.87,0:00:44.10,PixarShorts,,0,0,0,,GENTLE GUARDIAN OF
+Dialogue: 0,0:00:44.10,0:00:44.79,PixarShorts,,0,0,0,,A BRAND NEW
+Dialogue: 0,0:00:44.79,0:00:45.25,PixarShorts,,0,0,0,,WORLD.
+Dialogue: 0,0:00:45.25,0:00:45.93,PixarShorts,,0,0,0,,WHICH IS WHY
+Dialogue: 0,0:00:45.93,0:00:46.74,PixarShorts,,0,0,0,,PIP WILL NEVER
+Dialogue: 0,0:00:46.74,0:00:47.48,PixarShorts,,0,0,0,,STOP CARING.

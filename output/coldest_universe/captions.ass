@@ -1,0 +1,43 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1080
+PlayResY: 1920
+ScaledBorderAndShadow: yes
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Default,Impact,80,&H0000FFFF,&H000000FF,&H00000000,&H80000000,-1,0,0,0,100,100,2,0,1,6,2,2,60,60,400,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.10,0:00:01.07,Default,,0,0,0,,THE COLDEST PLACE
+Dialogue: 0,0:00:01.07,0:00:02.03,Default,,0,0,0,,IN THE KNOWN
+Dialogue: 0,0:00:02.03,0:00:03.00,Default,,0,0,0,,UNIVERSE IS NOT
+Dialogue: 0,0:00:03.00,0:00:03.97,Default,,0,0,0,,DEEP SPACE.
+Dialogue: 0,0:00:03.92,0:00:05.14,Default,,0,0,0,,IT IS ACTUALLY
+Dialogue: 0,0:00:05.14,0:00:06.35,Default,,0,0,0,,INSIDE A LABORATORY
+Dialogue: 0,0:00:06.35,0:00:07.57,Default,,0,0,0,,ON PLANET EARTH.
+Dialogue: 0,0:00:07.57,0:00:09.04,Default,,0,0,0,,IN THE FROZEN
+Dialogue: 0,0:00:09.04,0:00:10.51,Default,,0,0,0,,VACUUM OF SPACE,
+Dialogue: 0,0:00:10.51,0:00:11.98,Default,,0,0,0,,COSMIC RADIATION KEEPS
+Dialogue: 0,0:00:11.98,0:00:13.45,Default,,0,0,0,,EVERYTHING AROUND MINUS
+Dialogue: 0,0:00:13.45,0:00:14.92,Default,,0,0,0,,455 DEGREES FAHRENHEIT.
+Dialogue: 0,0:00:14.92,0:00:16.04,Default,,0,0,0,,EVEN THE BOOMERANG
+Dialogue: 0,0:00:16.04,0:00:17.16,Default,,0,0,0,,NEBULA SITS AT
+Dialogue: 0,0:00:17.16,0:00:18.29,Default,,0,0,0,,ONE KELVIN ABOVE
+Dialogue: 0,0:00:18.29,0:00:19.41,Default,,0,0,0,,ABSOLUTE ZERO.
+Dialogue: 0,0:00:19.41,0:00:20.57,Default,,0,0,0,,YET IN 2014,
+Dialogue: 0,0:00:20.57,0:00:21.73,Default,,0,0,0,,SCIENTISTS IN ITALY
+Dialogue: 0,0:00:21.73,0:00:22.90,Default,,0,0,0,,CHILLED A ONE-TON
+Dialogue: 0,0:00:22.90,0:00:24.06,Default,,0,0,0,,COPPER CUBE DOWN
+Dialogue: 0,0:00:24.06,0:00:25.22,Default,,0,0,0,,TO JUST SIX
+Dialogue: 0,0:00:25.22,0:00:26.38,Default,,0,0,0,,MILLIKELVIN.
+Dialogue: 0,0:00:26.38,0:00:28.06,Default,,0,0,0,,THAT IS MINUS
+Dialogue: 0,0:00:28.06,0:00:29.73,Default,,0,0,0,,459.5 DEGREES FAHRENHEIT—COLDER
+Dialogue: 0,0:00:29.73,0:00:31.40,Default,,0,0,0,,THAN ANYWHERE ELSE
+Dialogue: 0,0:00:31.40,0:00:33.08,Default,,0,0,0,,IN THE COSMOS.
+Dialogue: 0,0:00:33.08,0:00:34.11,Default,,0,0,0,,WHICH MEANS ACROSS
+Dialogue: 0,0:00:34.11,0:00:35.15,Default,,0,0,0,,BILLIONS OF LIGHT
+Dialogue: 0,0:00:35.15,0:00:36.19,Default,,0,0,0,,YEARS, THE COLDEST
+Dialogue: 0,0:00:36.19,0:00:37.22,Default,,0,0,0,,PLACE IN THE
+Dialogue: 0,0:00:37.22,0:00:38.26,Default,,0,0,0,,UNIVERSE IS...

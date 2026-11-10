@@ -1,0 +1,15 @@
+{
+  "name": "Antigravity Cloud Video Studio",
+  "image": "mcr.microsoft.com/devcontainers/python:3.11",
+  "features": {
+    "ghcr.io/devcontainers/features/common-utils:2": {}
+  },
+  "postCreateCommand": "curl -fsSL https://antigravity.google/cli/install.sh | bash && sudo apt-get update && sudo apt-get install -y ffmpeg && pip install edge-tts google-api-python-client google-auth-oauthlib google-auth-httplib2 pillow requests",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python"
+      ]
+    }
+  }
+}

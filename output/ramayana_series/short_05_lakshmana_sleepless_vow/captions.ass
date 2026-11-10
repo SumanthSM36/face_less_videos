@@ -1,0 +1,48 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1080
+PlayResY: 1920
+ScaledBorderAndShadow: yes
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Default,Impact,82,&H0000FFFF,&H000000FF,&H00000000,&H80000000,-1,0,0,0,100,100,2,0,1,6,2,2,60,60,400,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.10,0:00:01.05,Default,,0,0,0,,HOW DID LAKSHMANA
+Dialogue: 0,0:00:01.05,0:00:01.99,Default,,0,0,0,,DEFEAT AN INVINCIBLE
+Dialogue: 0,0:00:01.99,0:00:02.94,Default,,0,0,0,,DEMON THAT EVEN
+Dialogue: 0,0:00:02.94,0:00:03.89,Default,,0,0,0,,THE GODS COULD
+Dialogue: 0,0:00:03.89,0:00:04.83,Default,,0,0,0,,NOT KILL?
+Dialogue: 0,0:00:04.78,0:00:05.77,Default,,0,0,0,,RAVANA’S SON INDRAJIT
+Dialogue: 0,0:00:05.77,0:00:06.75,Default,,0,0,0,,POSSESSED A COSMIC
+Dialogue: 0,0:00:06.75,0:00:07.73,Default,,0,0,0,,BOON: HE COULD
+Dialogue: 0,0:00:07.73,0:00:08.71,Default,,0,0,0,,ONLY BE SLAIN
+Dialogue: 0,0:00:08.71,0:00:09.70,Default,,0,0,0,,BY SOMEONE WHO
+Dialogue: 0,0:00:09.70,0:00:10.68,Default,,0,0,0,,HAD NOT SLEPT
+Dialogue: 0,0:00:10.68,0:00:11.66,Default,,0,0,0,,FOR FOURTEEN CONSECUTIVE
+Dialogue: 0,0:00:11.66,0:00:12.64,Default,,0,0,0,,YEARS.
+Dialogue: 0,0:00:12.64,0:00:13.80,Default,,0,0,0,,ON THE FIRST
+Dialogue: 0,0:00:13.80,0:00:14.96,Default,,0,0,0,,NIGHT OF EXILE,
+Dialogue: 0,0:00:14.96,0:00:16.11,Default,,0,0,0,,NIDRA DEVI, THE
+Dialogue: 0,0:00:16.11,0:00:17.27,Default,,0,0,0,,GODDESS OF SLEEP,
+Dialogue: 0,0:00:17.27,0:00:18.42,Default,,0,0,0,,APPROACHED LAKSHMANA IN
+Dialogue: 0,0:00:18.42,0:00:19.58,Default,,0,0,0,,THE DARK FOREST.
+Dialogue: 0,0:00:19.58,0:00:20.59,Default,,0,0,0,,LAKSHMANA BEGGED HER
+Dialogue: 0,0:00:20.59,0:00:21.59,Default,,0,0,0,,TO LEAVE HIM
+Dialogue: 0,0:00:21.59,0:00:22.60,Default,,0,0,0,,SO HE COULD
+Dialogue: 0,0:00:22.60,0:00:23.61,Default,,0,0,0,,GUARD RAMA AND
+Dialogue: 0,0:00:23.61,0:00:24.62,Default,,0,0,0,,SITA WITHOUT BLINKING
+Dialogue: 0,0:00:24.62,0:00:25.62,Default,,0,0,0,,FOR FOURTEEN YEARS.
+Dialogue: 0,0:00:25.62,0:00:26.72,Default,,0,0,0,,THE GODDESS AGREED,
+Dialogue: 0,0:00:26.72,0:00:27.81,Default,,0,0,0,,TRANSFERRING HIS SLEEP
+Dialogue: 0,0:00:27.81,0:00:28.90,Default,,0,0,0,,TO HIS DEVOTED
+Dialogue: 0,0:00:28.90,0:00:29.99,Default,,0,0,0,,WIFE URMILA BACK
+Dialogue: 0,0:00:29.99,0:00:31.08,Default,,0,0,0,,IN AYODHYA.
+Dialogue: 0,0:00:31.08,0:00:32.36,Default,,0,0,0,,MAKING LAKSHMANA THE
+Dialogue: 0,0:00:32.36,0:00:33.65,Default,,0,0,0,,SOLITARY WARRIOR DESTINED
+Dialogue: 0,0:00:33.65,0:00:34.93,Default,,0,0,0,,TO BREAK INDRAJIT’S
+Dialogue: 0,0:00:34.93,0:00:36.21,Default,,0,0,0,,INVINCIBILITY.
+Dialogue: 0,0:00:36.21,0:00:37.64,Default,,0,0,0,,SHOWING HOW SUPREME
+Dialogue: 0,0:00:37.64,0:00:39.07,Default,,0,0,0,,SACRIFICE...
