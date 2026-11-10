@@ -22,3 +22,6 @@ output/voice_samples/
 # OS Artifacts
 .DS_Store
 Thumbs.db
+*.dmg
+*.zip
+

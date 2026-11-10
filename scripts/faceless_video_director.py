@@ -161,16 +161,30 @@ def render_short(script_text, image_paths, output_mp4, genre="general", title="F
     thumb_jpg = os.path.join(work_dir, "thumbnail.jpg")
 
     print("\n🎬 --- STEP 1: Natural Human Voice Synthesis ---")
-    print(f"Narrator: {cfg['voice']} (Rate: {cfg['rate']})")
-    cmd_tts = [
-        EDGE_TTS,
-        "--voice", cfg["voice"],
-        "--rate", cfg["rate"],
-        "--text", script_text,
-        "--write-media", voice_audio,
-        "--write-subtitles", vtt_file
-    ]
-    subprocess.run(cmd_tts, check=True)
+    
+    # Check if VoiceStudio local engine is online
+    from voicestudio_client import check_voicestudio_running, synthesize_speech as vs_synthesize
+    vs_online = check_voicestudio_running()
+    
+    if vs_online and genre == "pip":
+        print("🎙️ Using VoiceStudio Local Engine (Pip Custom Voice Clone / Design)")
+        try:
+            vs_synthesize(script_text, voice_audio, profile_id="pip-voice")
+        except Exception as e:
+            print(f"⚠️ VoiceStudio fallback to Edge-TTS: {e}")
+            vs_online = False
+
+    if not vs_online or genre != "pip":
+        print(f"Narrator: {cfg['voice']} (Rate: {cfg['rate']})")
+        cmd_tts = [
+            EDGE_TTS,
+            "--voice", cfg["voice"],
+            "--rate", cfg["rate"],
+            "--text", script_text,
+            "--write-media", voice_audio,
+            "--write-subtitles", vtt_file
+        ]
+        subprocess.run(cmd_tts, check=True)
     dur = get_audio_duration(voice_audio)
     print(f"✅ Voiceover generated: {dur:.2f} seconds")
 
