@@ -53,7 +53,7 @@ def list_profiles():
 def synthesize_speech(
     text: str,
     output_path: str,
-    voice: str = "8b340e19",  # DeepVoiceStudioPure
+    voice: str = "071a1fe1",  # UltraDeepCinematic (clean deep baritone)
     model: str = "omnivoice",
     speed: float = 1.0,
     instruct: str = None
@@ -71,7 +71,7 @@ def synthesize_speech(
         "response_format": fmt,
         "speed": speed,
         "num_step": 48,
-        "guidance_scale": 1.8,
+        "guidance_scale": 1.5,
         "denoise": True,
         "preprocess_prompt": True
     }
