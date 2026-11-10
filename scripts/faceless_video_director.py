@@ -59,7 +59,7 @@ GENRE_CONFIG = {
     },
     "story": {
         "voice": "en-US-AndrewMultilingualNeural",
-        "vs_voice": "466fe515",  # HumanStoryteller (cloned from authentic human sample)
+        "vs_voice": "7fc86d09",  # DeepStorytellerPro (cloned from deep proximity YouTube Short)
         "sub_color": "&H0000FFFF&",  # High-contrast yellow
         "rate": "+2%",
         "eq": "eq=contrast=1.14:saturation=1.20:brightness=0.01"
