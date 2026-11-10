@@ -57,10 +57,25 @@ GENRE_CONFIG = {
         "rate": "+2%",
         "eq": "eq=contrast=1.14:saturation=1.10:brightness=-0.02"
     },
+    "story": {
+        "voice": "en-US-ChristopherNeural",
+        "vs_voice": "dbd86f51",  # EpicStoryteller
+        "sub_color": "&H0000FFFF&",  # High-contrast yellow
+        "rate": "+2%",
+        "eq": "eq=contrast=1.14:saturation=1.20:brightness=0.01"
+    },
+    "documentary": {
+        "voice": "en-US-BrianNeural",
+        "vs_voice": "b20a4892",  # CinematicNarrator
+        "sub_color": "&H00FFFFFF&",  # Crisp white
+        "rate": "+2%",
+        "eq": "eq=contrast=1.15:saturation=1.15:brightness=0.0"
+    },
     "general": {
-        "voice": "en-US-AndrewMultilingualNeural",
+        "voice": "en-US-ChristopherNeural",
+        "vs_voice": "b20a4892",
         "sub_color": "&H0000FFFF&",
-        "rate": "+3%",
+        "rate": "+2%",
         "eq": "eq=contrast=1.12:saturation=1.18:brightness=0.0"
     }
 }
@@ -152,7 +167,7 @@ def validate_image_fidelity(img_path):
     return True
 
 
-def render_short(script_text, image_paths, output_mp4, genre="general", title="Faceless Short"):
+def render_short(script_text, image_paths, output_mp4, genre="general", title="Faceless Short", voice=None, engine="auto"):
     cfg = GENRE_CONFIG.get(genre, GENRE_CONFIG["general"])
     work_dir = os.path.dirname(os.path.abspath(output_mp4))
     os.makedirs(work_dir, exist_ok=True)
@@ -168,20 +183,30 @@ def render_short(script_text, image_paths, output_mp4, genre="general", title="F
     from voicestudio_client import check_voicestudio_running, synthesize_speech as vs_synthesize, transcribe_to_vtt as vs_transcribe
     vs_online = check_voicestudio_running()
     
-    if vs_online and genre == "pip":
-        print("🎙️ Using VoiceStudio Local Engine (Apple Silicon MPS Accelerated)")
+    use_vs = False
+    if engine == "voicestudio":
+        use_vs = vs_online
+    elif engine == "edge":
+        use_vs = False
+    else:  # auto
+        use_vs = vs_online and ("vs_voice" in cfg or genre == "pip")
+
+    if use_vs:
+        vs_target_voice = voice or cfg.get("vs_voice", "demo0001")
+        print(f"🎙️ Using VoiceStudio Local Engine (Profile: {vs_target_voice}) [Apple Silicon MPS]")
         try:
-            vs_synthesize(script_text, voice_audio, voice="demo0001")
+            vs_synthesize(script_text, voice_audio, voice=vs_target_voice)
             vs_transcribe(voice_audio, vtt_file)
         except Exception as e:
-            print(f"⚠️ VoiceStudio fallback to Edge-TTS: {e}")
-            vs_online = False
+            print(f"⚠️ VoiceStudio error, falling back to Edge-TTS: {e}")
+            use_vs = False
 
-    if not vs_online or genre != "pip":
-        print(f"Narrator: {cfg['voice']} (Rate: {cfg['rate']})")
+    if not use_vs:
+        edge_voice = voice or cfg["voice"]
+        print(f"Narrator (Edge-TTS): {edge_voice} (Rate: {cfg['rate']})")
         cmd_tts = [
             EDGE_TTS,
-            "--voice", cfg["voice"],
+            "--voice", edge_voice,
             "--rate", cfg["rate"],
             "--text", script_text,
             "--write-media", voice_audio,
@@ -300,10 +325,12 @@ def render_short(script_text, image_paths, output_mp4, genre="general", title="F
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Faceless Video Director Master Engine")
     parser.add_argument("--genre", default="general", choices=list(GENRE_CONFIG.keys()))
+    parser.add_argument("--voice", default=None, help="Voice name or profile ID override")
+    parser.add_argument("--engine", default="auto", choices=["auto", "voicestudio", "edge"], help="TTS engine choice")
     parser.add_argument("--title", default="Untitled Master Short")
     parser.add_argument("--script", required=True)
     parser.add_argument("--images", nargs="+", required=True)
     parser.add_argument("--output", default="output/director_short.mp4")
     args = parser.parse_args()
 
-    render_short(args.script, args.images, args.output, genre=args.genre, title=args.title)
+    render_short(args.script, args.images, args.output, genre=args.genre, title=args.title, voice=args.voice, engine=args.engine)
