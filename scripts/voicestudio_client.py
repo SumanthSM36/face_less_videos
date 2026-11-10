@@ -53,7 +53,7 @@ def list_profiles():
 def synthesize_speech(
     text: str,
     output_path: str,
-    voice: str = "demo0001",
+    voice: str = "8b340e19",  # DeepVoiceStudioPure
     model: str = "omnivoice",
     speed: float = 1.0,
     instruct: str = None
@@ -70,9 +70,10 @@ def synthesize_speech(
         "voice": voice,
         "response_format": fmt,
         "speed": speed,
-        "num_step": 32,
-        "guidance_scale": 2.2,
-        "denoise": True
+        "num_step": 48,
+        "guidance_scale": 1.8,
+        "denoise": True,
+        "preprocess_prompt": True
     }
     if instruct:
         payload_data["instruct"] = instruct

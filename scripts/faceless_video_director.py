@@ -59,7 +59,7 @@ GENRE_CONFIG = {
     },
     "story": {
         "voice": "en-US-AndrewMultilingualNeural",
-        "vs_voice": "7fc86d09",  # DeepStorytellerPro (cloned from deep proximity YouTube Short)
+        "vs_voice": "8b340e19",  # DeepVoiceStudioPure (Demucs-isolated, crystal clear deep clone)
         "sub_color": "&H0000FFFF&",  # High-contrast yellow
         "rate": "+2%",
         "eq": "eq=contrast=1.14:saturation=1.20:brightness=0.01"
@@ -215,13 +215,13 @@ def render_short(script_text, image_paths, output_mp4, genre="general", title="F
         subprocess.run(cmd_tts, check=True)
     dur = get_audio_duration(voice_audio)
     
-    # Apply Studio Acoustic Vocal Mastering (eliminates robotic metallic waves & adds warm chest resonance)
-    print("🎛️ Mastering Vocal Track: De-essing, 280Hz warm boost & anti-buzz filtering...")
+    # Apply Studio Acoustic Vocal Mastering (FFT denoiser, de-esser, anti-buzz lowpass & warm chest EQ)
+    print("🎛️ Mastering Vocal Track: Demucs/FFT Denoising, 250Hz proximity boost & anti-buzz filtering...")
     mastered_voice = os.path.join(work_dir, "mastered_voice.mp3")
     cmd_master = [
         FFMPEG, "-y",
         "-i", voice_audio,
-        "-af", "highpass=f=80,lowpass=f=11000,equalizer=f=280:t=q:w=1.1:g=3.0,equalizer=f=3300:t=q:w=1.5:g=-2.5,compand=attacks=0.02:decays=0.2:points=-80/-80|-30/-20|0/-12:soft-knee=6",
+        "-af", "highpass=f=75,afftdn=nf=-30:nr=15,lowpass=f=9500,equalizer=f=250:t=q:w=1.2:g=3.5,equalizer=f=3300:t=q:w=1.8:g=-3.0,compand=attacks=0.02:decays=0.2:points=-80/-80|-30/-18|0/-10:soft-knee=6",
         "-c:a", "libmp3lame",
         "-b:a", "192k",
         mastered_voice
