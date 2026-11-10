@@ -69,7 +69,10 @@ def synthesize_speech(
         "input": text,
         "voice": voice,
         "response_format": fmt,
-        "speed": speed
+        "speed": speed,
+        "num_step": 32,
+        "guidance_scale": 2.2,
+        "denoise": True
     }
     if instruct:
         payload_data["instruct"] = instruct

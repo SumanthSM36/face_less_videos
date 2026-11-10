@@ -58,8 +58,8 @@ GENRE_CONFIG = {
         "eq": "eq=contrast=1.14:saturation=1.10:brightness=-0.02"
     },
     "story": {
-        "voice": "en-US-ChristopherNeural",
-        "vs_voice": "dbd86f51",  # EpicStoryteller
+        "voice": "en-US-AndrewMultilingualNeural",
+        "vs_voice": "466fe515",  # HumanStoryteller (cloned from authentic human sample)
         "sub_color": "&H0000FFFF&",  # High-contrast yellow
         "rate": "+2%",
         "eq": "eq=contrast=1.14:saturation=1.20:brightness=0.01"
@@ -214,7 +214,22 @@ def render_short(script_text, image_paths, output_mp4, genre="general", title="F
         ]
         subprocess.run(cmd_tts, check=True)
     dur = get_audio_duration(voice_audio)
-    print(f"✅ Voiceover generated: {dur:.2f} seconds")
+    
+    # Apply Studio Acoustic Vocal Mastering (eliminates robotic metallic waves & adds warm chest resonance)
+    print("🎛️ Mastering Vocal Track: De-essing, 280Hz warm boost & anti-buzz filtering...")
+    mastered_voice = os.path.join(work_dir, "mastered_voice.mp3")
+    cmd_master = [
+        FFMPEG, "-y",
+        "-i", voice_audio,
+        "-af", "highpass=f=80,lowpass=f=11000,equalizer=f=280:t=q:w=1.1:g=3.0,equalizer=f=3300:t=q:w=1.5:g=-2.5,compand=attacks=0.02:decays=0.2:points=-80/-80|-30/-20|0/-12:soft-knee=6",
+        "-c:a", "libmp3lame",
+        "-b:a", "192k",
+        mastered_voice
+    ]
+    subprocess.run(cmd_master, stdout=subprocess.DEVNULL, stderr=subprocess.PIPE, check=True)
+    voice_audio = mastered_voice
+    dur = get_audio_duration(voice_audio)
+    print(f"✅ Mastered voiceover generated: {dur:.2f} seconds")
 
     print("\n🎬 --- STEP 2: Kinetic Safe-Zone Subtitles ---")
     parse_vtt_to_ass(vtt_file, ass_file, sub_color=cfg["sub_color"])
