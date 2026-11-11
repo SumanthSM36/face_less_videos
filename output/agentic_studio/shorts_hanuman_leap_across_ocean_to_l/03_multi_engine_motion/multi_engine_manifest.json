@@ -1,0 +1,57 @@
+[
+  {
+    "scene_number": 1,
+    "title": "The Ancient Hook",
+    "engine": "luma_dream_machine",
+    "platform_name": "Luma Dream Machine (lumalabs.ai)",
+    "generation_prompt": "Cinematic photorealistic 3D footage of Wide cinematic shot revealing The untold origin and profound hidden tr with glowing atmospheric lighting., volumetric golden god rays, floating mystical particles, slow majestic camera push, highly realistic scale and depth, vertical 9:16",
+    "camera_movement": "Sweeping 3D Camera Orbit with volumetric god rays and floating celestial depth",
+    "duration_seconds": 8.0,
+    "aspect_ratio": "9:16 (1080x1920)",
+    "assigned_clip_path": ""
+  },
+  {
+    "scene_number": 2,
+    "title": "The Unseen Challenge",
+    "engine": "luma_dream_machine",
+    "platform_name": "Luma Dream Machine (lumalabs.ai)",
+    "generation_prompt": "Cinematic photorealistic 3D footage of Low-angle upward tilt capturing the monumental obstacle and emotional tension., volumetric golden god rays, floating mystical particles, slow majestic camera push, highly realistic scale and depth, vertical 9:16",
+    "camera_movement": "Cinematic Forward Crane Push with golden hour atmospheric lighting",
+    "duration_seconds": 9.0,
+    "aspect_ratio": "9:16 (1080x1920)",
+    "assigned_clip_path": ""
+  },
+  {
+    "scene_number": 3,
+    "title": "The Turning Point",
+    "engine": "luma_dream_machine",
+    "platform_name": "Luma Dream Machine (lumalabs.ai)",
+    "generation_prompt": "Cinematic photorealistic 3D footage of Golden hour volumetric lighting illuminating the decisive choice of righteousness., volumetric golden god rays, floating mystical particles, slow majestic camera push, highly realistic scale and depth, vertical 9:16",
+    "camera_movement": "Sweeping 3D Camera Orbit with volumetric god rays and floating celestial depth",
+    "duration_seconds": 9.0,
+    "aspect_ratio": "9:16 (1080x1920)",
+    "assigned_clip_path": ""
+  },
+  {
+    "scene_number": 4,
+    "title": "The Emotional Climax",
+    "engine": "luma_dream_machine",
+    "platform_name": "Luma Dream Machine (lumalabs.ai)",
+    "generation_prompt": "Cinematic photorealistic 3D footage of Intimate character close-up with teary glistening eyes expressing boundless courage., volumetric golden god rays, floating mystical particles, slow majestic camera push, highly realistic scale and depth, vertical 9:16",
+    "camera_movement": "Cinematic Forward Crane Push with golden hour atmospheric lighting",
+    "duration_seconds": 9.5,
+    "aspect_ratio": "9:16 (1080x1920)",
+    "assigned_clip_path": ""
+  },
+  {
+    "scene_number": 5,
+    "title": "Cosmic Loop",
+    "engine": "luma_dream_machine",
+    "platform_name": "Luma Dream Machine (lumalabs.ai)",
+    "generation_prompt": "Cinematic photorealistic 3D footage of Luminous camera pull-back into stardust galaxy, seamlessly blending into opening frame., volumetric golden god rays, floating mystical particles, slow majestic camera push, highly realistic scale and depth, vertical 9:16",
+    "camera_movement": "Sweeping 3D Camera Orbit with volumetric god rays and floating celestial depth",
+    "duration_seconds": 9.5,
+    "aspect_ratio": "9:16 (1080x1920)",
+    "assigned_clip_path": ""
+  }
+]

@@ -1,0 +1,89 @@
+{
+  "orchestrator": "Agent Manager v2.0",
+  "user_prompt": "Hanuman leap across ocean to Lanka",
+  "classified_intent": {
+    "task_type": "shorts",
+    "topic": "Hanuman leap across ocean to lanka",
+    "target_duration": 42.0,
+    "style": "cinematic_lore"
+  },
+  "director_execution_result": {
+    "status": "COMPLETED",
+    "title": "The Sacred Secret of Hanuman leap across ocean to lanka",
+    "topic": "Hanuman leap across ocean to lanka",
+    "video_path": "/Users/sumanth/Downloads/New/output/agentic_studio/shorts_hanuman_leap_across_ocean_to_l/final_short.mp4",
+    "thumbnail_path": "/Users/sumanth/Downloads/New/output/agentic_studio/shorts_hanuman_leap_across_ocean_to_l/final_short_thumb.jpg",
+    "duration_seconds": 33.166667,
+    "audience_score": 96,
+    "audience_verdict": "APPROVED",
+    "healing_events_count": 0,
+    "shot_list_cuts": 10,
+    "safe_zone_y": 1450,
+    "multi_engine_specs": [
+      {
+        "scene_number": 1,
+        "title": "The Ancient Hook",
+        "engine": "luma_dream_machine",
+        "platform_name": "Luma Dream Machine (lumalabs.ai)",
+        "generation_prompt": "Cinematic photorealistic 3D footage of Wide cinematic shot revealing The untold origin and profound hidden tr with glowing atmospheric lighting., volumetric golden god rays, floating mystical particles, slow majestic camera push, highly realistic scale and depth, vertical 9:16",
+        "camera_movement": "Sweeping 3D Camera Orbit with volumetric god rays and floating celestial depth",
+        "duration_seconds": 8.0,
+        "aspect_ratio": "9:16 (1080x1920)",
+        "assigned_clip_path": ""
+      },
+      {
+        "scene_number": 2,
+        "title": "The Unseen Challenge",
+        "engine": "luma_dream_machine",
+        "platform_name": "Luma Dream Machine (lumalabs.ai)",
+        "generation_prompt": "Cinematic photorealistic 3D footage of Low-angle upward tilt capturing the monumental obstacle and emotional tension., volumetric golden god rays, floating mystical particles, slow majestic camera push, highly realistic scale and depth, vertical 9:16",
+        "camera_movement": "Cinematic Forward Crane Push with golden hour atmospheric lighting",
+        "duration_seconds": 9.0,
+        "aspect_ratio": "9:16 (1080x1920)",
+        "assigned_clip_path": ""
+      },
+      {
+        "scene_number": 3,
+        "title": "The Turning Point",
+        "engine": "luma_dream_machine",
+        "platform_name": "Luma Dream Machine (lumalabs.ai)",
+        "generation_prompt": "Cinematic photorealistic 3D footage of Golden hour volumetric lighting illuminating the decisive choice of righteousness., volumetric golden god rays, floating mystical particles, slow majestic camera push, highly realistic scale and depth, vertical 9:16",
+        "camera_movement": "Sweeping 3D Camera Orbit with volumetric god rays and floating celestial depth",
+        "duration_seconds": 9.0,
+        "aspect_ratio": "9:16 (1080x1920)",
+        "assigned_clip_path": ""
+      },
+      {
+        "scene_number": 4,
+        "title": "The Emotional Climax",
+        "engine": "luma_dream_machine",
+        "platform_name": "Luma Dream Machine (lumalabs.ai)",
+        "generation_prompt": "Cinematic photorealistic 3D footage of Intimate character close-up with teary glistening eyes expressing boundless courage., volumetric golden god rays, floating mystical particles, slow majestic camera push, highly realistic scale and depth, vertical 9:16",
+        "camera_movement": "Cinematic Forward Crane Push with golden hour atmospheric lighting",
+        "duration_seconds": 9.5,
+        "aspect_ratio": "9:16 (1080x1920)",
+        "assigned_clip_path": ""
+      },
+      {
+        "scene_number": 5,
+        "title": "Cosmic Loop",
+        "engine": "luma_dream_machine",
+        "platform_name": "Luma Dream Machine (lumalabs.ai)",
+        "generation_prompt": "Cinematic photorealistic 3D footage of Luminous camera pull-back into stardust galaxy, seamlessly blending into opening frame., volumetric golden god rays, floating mystical particles, slow majestic camera push, highly realistic scale and depth, vertical 9:16",
+        "camera_movement": "Sweeping 3D Camera Orbit with volumetric god rays and floating celestial depth",
+        "duration_seconds": 9.5,
+        "aspect_ratio": "9:16 (1080x1920)",
+        "assigned_clip_path": ""
+      }
+    ],
+    "ai_prompt_deck": "/Users/sumanth/Downloads/New/output/agentic_studio/shorts_hanuman_leap_across_ocean_to_l/03_multi_engine_motion/AI_VIDEO_PROMPT_DECK.md"
+  },
+  "healer_status": {
+    "active_guards": [
+      "IPv4_DNS_Routing",
+      "Neural_Voice_Fallback",
+      "FFmpeg_Sanitization"
+    ],
+    "total_healing_events": 0
+  }
+}
