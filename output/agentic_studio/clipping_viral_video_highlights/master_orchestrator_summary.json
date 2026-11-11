@@ -1,0 +1,40 @@
+{
+  "orchestrator": "Agent Manager v2.0",
+  "user_prompt": "clip this lecture",
+  "classified_intent": {
+    "task_type": "clipping",
+    "topic": "Viral Video Highlights",
+    "target_duration": 15.0,
+    "style": "dynamic_motion"
+  },
+  "director_execution_result": {
+    "status": "COMPLETED",
+    "title": "test_podcast_lecture",
+    "source": "/tmp/test_podcast_lecture.mp4",
+    "final_video_path": "/Users/sumanth/Downloads/New/output/agentic_studio/clipping_viral_video_highlights/final_clipped_short.mp4",
+    "thumbnail_path": "/Users/sumanth/Downloads/New/output/agentic_studio/clipping_viral_video_highlights/final_clipped_short_thumb.jpg",
+    "start_time": "00:00:05",
+    "duration_seconds": 15.0,
+    "virality_score": 98,
+    "source_method": "user_defined",
+    "reframe_preset": "blurred_backdrop",
+    "all_ranked_candidates": [
+      {
+        "start_time": "00:00:05",
+        "duration": 15.0,
+        "title": "test_podcast_lecture",
+        "hook_phrase": "Must Watch Viral Highlight",
+        "virality_score": 98,
+        "source_method": "user_defined"
+      }
+    ]
+  },
+  "healer_status": {
+    "active_guards": [
+      "IPv4_DNS_Routing",
+      "Neural_Voice_Fallback",
+      "FFmpeg_Sanitization"
+    ],
+    "total_healing_events": 0
+  }
+}

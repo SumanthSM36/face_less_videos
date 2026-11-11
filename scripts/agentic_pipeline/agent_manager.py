@@ -100,11 +100,12 @@ class AgentManager:
         if "clip" in p_low or "youtube.com" in p_low or "youtu.be" in p_low or "extract" in p_low or "from long" in p_low:
             task_type = TaskType.CLIPPING
             # Detect URL if present
-            url = None
-            for word in prompt.split():
-                if "http://" in word or "https://" in word:
-                    url = word
-                    break
+            url = params.get("source_url")
+            if not url:
+                for word in prompt.split():
+                    if "http://" in word or "https://" in word:
+                        url = word
+                        break
             return UserIntent(
                 raw_prompt=prompt,
                 task_type=task_type,
