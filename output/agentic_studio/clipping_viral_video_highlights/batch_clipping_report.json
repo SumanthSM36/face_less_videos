@@ -1,0 +1,149 @@
+{
+  "status": "COMPLETED",
+  "total_shorts_generated": 3,
+  "reframe_preset": "dynamic_angles",
+  "caption_preset": "hormozi_pop",
+  "source": "https://youtu.be/mskEXYqt9ak?si=CCBr-nuZ3SgypJp3",
+  "primary_short": {
+    "short_index": 1,
+    "title": "AND THAT'S CHAT \ud83d\ude31 #shorts",
+    "start_time": "00:08:40",
+    "duration_seconds": 35.0,
+    "virality_score": 99,
+    "hook_header": "AND THAT'S CHAT",
+    "final_video_path": "/Users/sumanth/Downloads/New/output/agentic_studio/clipping_viral_video_highlights/short_01_and_that_s_chat/final_clipped_short.mp4",
+    "thumbnail_path": "/Users/sumanth/Downloads/New/output/agentic_studio/clipping_viral_video_highlights/short_01_and_that_s_chat/final_clipped_short_thumb.jpg",
+    "description": "Watch this viral moment: And that's chat!\n\nFollow for more viral clips & highlights.\n\n#shorts #viral #funny #trending",
+    "tags": [
+      "shorts",
+      "viral",
+      "highlights",
+      "funny",
+      "trending"
+    ]
+  },
+  "generated_shorts": [
+    {
+      "short_index": 1,
+      "title": "AND THAT'S CHAT \ud83d\ude31 #shorts",
+      "start_time": "00:08:40",
+      "duration_seconds": 35.0,
+      "virality_score": 99,
+      "hook_header": "AND THAT'S CHAT",
+      "final_video_path": "/Users/sumanth/Downloads/New/output/agentic_studio/clipping_viral_video_highlights/short_01_and_that_s_chat/final_clipped_short.mp4",
+      "thumbnail_path": "/Users/sumanth/Downloads/New/output/agentic_studio/clipping_viral_video_highlights/short_01_and_that_s_chat/final_clipped_short_thumb.jpg",
+      "description": "Watch this viral moment: And that's chat!\n\nFollow for more viral clips & highlights.\n\n#shorts #viral #funny #trending",
+      "tags": [
+        "shorts",
+        "viral",
+        "highlights",
+        "funny",
+        "trending"
+      ]
+    },
+    {
+      "short_index": 2,
+      "title": "OH, BROTHER \ud83d\ude31 #shorts",
+      "start_time": "00:12:00",
+      "duration_seconds": 35.0,
+      "virality_score": 99,
+      "hook_header": "OH, BROTHER",
+      "final_video_path": "/Users/sumanth/Downloads/New/output/agentic_studio/clipping_viral_video_highlights/short_02_oh_brother/final_clipped_short.mp4",
+      "thumbnail_path": "/Users/sumanth/Downloads/New/output/agentic_studio/clipping_viral_video_highlights/short_02_oh_brother/final_clipped_short_thumb.jpg",
+      "description": "Watch this viral moment: Oh, brother!\n\nFollow for more viral clips & highlights.\n\n#shorts #viral #funny #trending",
+      "tags": [
+        "shorts",
+        "viral",
+        "highlights",
+        "funny",
+        "trending"
+      ]
+    },
+    {
+      "short_index": 3,
+      "title": "IF YOU DON'T, WHY YOU NEVER SHOWED UP, I... \ud83d\ude31 #shorts",
+      "start_time": "00:14:50",
+      "duration_seconds": 35.0,
+      "virality_score": 99,
+      "hook_header": "IF YOU DON'T, WHY YOU NEVER SHOWED UP, I...",
+      "final_video_path": "/Users/sumanth/Downloads/New/output/agentic_studio/clipping_viral_video_highlights/short_03_if_you_don_t_why_you_never_sh/final_clipped_short.mp4",
+      "thumbnail_path": "/Users/sumanth/Downloads/New/output/agentic_studio/clipping_viral_video_highlights/short_03_if_you_don_t_why_you_never_sh/final_clipped_short_thumb.jpg",
+      "description": "Watch this viral moment: If you don't, why you never showed up, I...!\n\nFollow for more viral clips & highlights.\n\n#shorts #viral #funny #trending",
+      "tags": [
+        "shorts",
+        "viral",
+        "highlights",
+        "funny",
+        "trending"
+      ]
+    }
+  ],
+  "final_video_path": "/Users/sumanth/Downloads/New/output/agentic_studio/clipping_viral_video_highlights/final_clipped_short.mp4",
+  "thumbnail_path": "/Users/sumanth/Downloads/New/output/agentic_studio/clipping_viral_video_highlights/final_clipped_short_thumb.jpg",
+  "all_ranked_candidates": [
+    {
+      "start_time": "00:08:40",
+      "duration": 35.0,
+      "title": "And that's chat",
+      "hook_phrase": "AND THAT'S CHAT",
+      "virality_score": 99,
+      "source_method": "transcript_scanner"
+    },
+    {
+      "start_time": "00:12:00",
+      "duration": 35.0,
+      "title": "Oh, brother",
+      "hook_phrase": "OH, BROTHER",
+      "virality_score": 99,
+      "source_method": "transcript_scanner"
+    },
+    {
+      "start_time": "00:14:50",
+      "duration": 35.0,
+      "title": "If you don't, why you never showed up, I...",
+      "hook_phrase": "IF YOU DON'T, WHY YOU NEVER SHOWED UP, I...",
+      "virality_score": 99,
+      "source_method": "transcript_scanner"
+    },
+    {
+      "start_time": "00:19:00",
+      "duration": 35.0,
+      "title": "Yo, Spiderman",
+      "hook_phrase": "YO, SPIDERMAN",
+      "virality_score": 99,
+      "source_method": "transcript_scanner"
+    },
+    {
+      "start_time": "00:22:40",
+      "duration": 35.0,
+      "title": "Why",
+      "hook_phrase": "WHY",
+      "virality_score": 99,
+      "source_method": "transcript_scanner"
+    },
+    {
+      "start_time": "00:01:10",
+      "duration": 35.0,
+      "title": "Yeah",
+      "hook_phrase": "YEAH",
+      "virality_score": 97,
+      "source_method": "transcript_scanner"
+    },
+    {
+      "start_time": "00:04:20",
+      "duration": 35.0,
+      "title": "tell that there's something there",
+      "hook_phrase": "TELL THAT THERE'S SOMETHING THERE",
+      "virality_score": 97,
+      "source_method": "transcript_scanner"
+    },
+    {
+      "start_time": "00:09:10",
+      "duration": 35.0,
+      "title": "What's going on, bro",
+      "hook_phrase": "WHAT'S GOING ON, BRO",
+      "virality_score": 97,
+      "source_method": "transcript_scanner"
+    }
+  ]
+}

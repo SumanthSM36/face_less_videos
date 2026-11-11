@@ -19,12 +19,13 @@ from scripts.agentic_pipeline.agent_manager import AgentManager
 def main():
     parser = argparse.ArgumentParser(description="Autonomous Video Studio Agentic Pipeline")
     parser.add_argument("prompt", type=str, help="User request/instruction (e.g., 'create short video on Shabari devotion')")
-    parser.add_argument("--duration", type=float, default=45.0, help="Target video duration in seconds")
+    parser.add_argument("--duration", type=float, default=35.0, help="Target video duration in seconds per clip")
     parser.add_argument("--url", type=str, default=None, help="Source URL for video clipping")
     parser.add_argument("--file", type=str, default=None, help="Source file for video clipping")
-    parser.add_argument("--start", type=str, default="00:00:10", help="Clipping start timestamp (e.g. 00:00:15)")
+    parser.add_argument("--start", type=str, default=None, help="Clipping start timestamp (e.g. 00:00:15). If omitted, full AI moment detection runs.")
+    parser.add_argument("--num-clips", type=int, default=3, help="Number of viral shorts to create from the video (default: 3)")
     parser.add_argument("--caption-style", type=str, default="hormozi_pop", choices=["hormozi_pop", "beast_neon", "pixar_gold", "cyber_cyan"], help="Kinetic typography style preset")
-    parser.add_argument("--reframe", type=str, default="blurred_backdrop", choices=["blurred_backdrop", "split_screen", "crop_center"], help="Vertical 9:16 reframe preset")
+    parser.add_argument("--reframe", type=str, default="dynamic_angles", choices=["dynamic_angles", "blurred_backdrop", "split_screen", "crop_center"], help="Vertical 9:16 reframe preset")
 
     args = parser.parse_args()
 
@@ -38,6 +39,7 @@ def main():
         "source_url": args.url,
         "source_file": args.file,
         "start_time": args.start,
+        "num_clips": args.num_clips,
         "caption_preset": args.caption_style,
         "reframe_preset": args.reframe
     }

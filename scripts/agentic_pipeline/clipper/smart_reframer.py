@@ -54,6 +54,19 @@ class SmartReframer:
                 "eq=contrast=1.08:saturation=1.12,"
                 "vignette=PI/4.5"
             )
+        elif preset == "dynamic_angles":
+            # Industry-leading Dynamic Angle Switching (Alternates Wide <-> Hero Punch-in Zoom every 3.5s)
+            vf = (
+                "split=4[v_bg1][v_fg1][v_bg2][v_fg2];"
+                "[v_bg1]scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,boxblur=28:14,eq=brightness=-0.08:contrast=1.1[bg1];"
+                "[v_fg1]scale=1080:-1[wide_fg];"
+                "[bg1][wide_fg]overlay=(W-w)/2:(H-h)/2[wide];"
+                "[v_bg2]scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,boxblur=28:14,eq=brightness=-0.08:contrast=1.1[bg2];"
+                "[v_fg2]scale=1458:-1[zoom_fg];"
+                "[bg2][zoom_fg]overlay=(W-w)/2:(H-h)/2[punchin];"
+                "[wide][punchin]overlay=0:0:enable='gte(mod(t,7),3.5)'[stacked];"
+                "[stacked]eq=contrast=1.06:saturation=1.12,vignette=PI/4.5,fps=30"
+            )
         else:
             # Default: Cinematic Blurred Ambient Backdrop (Industry Standard)
             vf = (

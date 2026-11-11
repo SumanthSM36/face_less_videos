@@ -70,7 +70,10 @@ class DirectorClipper:
 
         # Step 2: Viral Moment Detection & Hook Selection
         user_start = intent.extra_instructions.get("start_time")
-        target_duration = intent.target_duration or 45.0
+        if user_start in ["auto", "None", "", "00:00:00"]:
+            user_start = None
+
+        target_duration = intent.target_duration or 40.0
 
         candidates = self.detector.detect_best_moments(
             metadata=metadata,
@@ -79,74 +82,118 @@ class DirectorClipper:
             user_start=user_start,
             target_duration=target_duration
         )
-        selected_clip: ViralClipCandidate = candidates[0]
-        logger.info(f"🏆 Selected viral clip: '{selected_clip.title}' from {selected_clip.start_time} ({selected_clip.duration}s)")
 
-        # Step 3: Media Segment Sourcing
-        raw_clip_path = os.path.join(self.output_dir, "raw_clip_segment.mp4")
-        if is_url:
-            # Fast-download only the needed section via yt-dlp
-            downloaded = self.ingestor.download_section(
-                url=intent.source_url,
-                start_time=selected_clip.start_time,
-                duration=selected_clip.duration,
-                out_filename="raw_clip_segment.mp4"
-            )
-            raw_clip_path = downloaded
-        else:
-            # Local slice
-            raw_clip_path = self._slice_local_video(
-                media_path, selected_clip.start_time, selected_clip.duration, raw_clip_path
-            )
+        num_clips = int(intent.extra_instructions.get("num_clips", 3))
+        if user_start:
+            num_clips = 1
 
-        # Step 4: Smart Vertical 9:16 Reframing
-        reframed_path = os.path.join(self.output_dir, "reframed_vertical_916.mp4")
-        reframe_preset = intent.extra_instructions.get("reframe_preset", "blurred_backdrop")
-        self.reframer.reframe_to_vertical(
-            input_media=raw_clip_path,
-            output_mp4=reframed_path,
-            start_time="00:00:00" if is_url else selected_clip.start_time,
-            duration=selected_clip.duration,
-            preset=reframe_preset
-        )
-
-        # Step 5: Kinetic Subtitle Burning & Hook Headline (Attractive Hormozi / MrBeast Style)
-        final_mp4 = os.path.join(self.output_dir, "final_clipped_short.mp4")
+        selected_candidates = candidates[:num_clips]
+        reframe_preset = intent.extra_instructions.get("reframe_preset", "dynamic_angles")
         caption_preset = intent.extra_instructions.get("caption_preset", "hormozi_pop")
-        header_text = intent.extra_instructions.get("header_title", selected_clip.title)
-        self.captioner.burn_subtitles_onto_clip(
-            video_path=reframed_path,
-            srt_path=srt_path,
-            start_time_ts=selected_clip.start_time,
-            clip_duration=selected_clip.duration,
-            output_mp4=final_mp4,
-            preset=caption_preset,
-            header_title=header_text
-        )
 
-        # Step 6: Frame 0 Thumbnail Extraction
-        thumb_path = os.path.join(self.output_dir, "final_clipped_short_thumb.jpg")
-        self._extract_thumbnail(final_mp4, thumb_path)
+        logger.info(f"🏆 Selected {len(selected_candidates)} viral moments for multi-short batch generation (Preset: {reframe_preset}).")
+
+        import re
+        import shutil
+        generated_shorts: List[Dict[str, Any]] = []
+
+        for idx, clip in enumerate(selected_candidates, start=1):
+            slug_title = re.sub(r"[^a-zA-Z0-9]+", "_", clip.title[:30]).strip("_").lower()
+            short_slug = f"short_{idx:02d}_{slug_title}"
+            short_dir = os.path.join(self.output_dir, short_slug)
+            os.makedirs(short_dir, exist_ok=True)
+
+            logger.info(f"🎬 [Director Clipper] Producing Short #{idx}/{len(selected_candidates)}: '{clip.title}' ({clip.start_time}, {clip.duration}s)...")
+
+            # Step 3: Media Segment Sourcing
+            raw_clip_path = os.path.join(short_dir, "raw_clip_segment.mp4")
+            if is_url:
+                raw_clip_path = self.ingestor.download_section(
+                    url=intent.source_url,
+                    start_time=clip.start_time,
+                    duration=clip.duration,
+                    out_filename=f"{short_slug}_raw.mp4"
+                )
+            else:
+                raw_clip_path = self._slice_local_video(
+                    media_path, clip.start_time, clip.duration, raw_clip_path
+                )
+
+            # Step 4: Smart Vertical 9:16 Reframing (Dynamic Angles)
+            reframed_path = os.path.join(short_dir, "reframed_vertical_916.mp4")
+            self.reframer.reframe_to_vertical(
+                input_media=raw_clip_path,
+                output_mp4=reframed_path,
+                start_time="00:00:00" if is_url else clip.start_time,
+                duration=clip.duration,
+                preset=reframe_preset
+            )
+
+            # Step 5: Kinetic Subtitle Burning & Hook Headline Banner
+            final_mp4 = os.path.join(short_dir, "final_clipped_short.mp4")
+            header_text = clip.hook_phrase
+            self.captioner.burn_subtitles_onto_clip(
+                video_path=reframed_path,
+                srt_path=srt_path,
+                start_time_ts=clip.start_time,
+                clip_duration=clip.duration,
+                output_mp4=final_mp4,
+                preset=caption_preset,
+                header_title=header_text
+            )
+
+            # Step 6: Frame 0 Thumbnail Extraction
+            thumb_path = os.path.join(short_dir, "final_clipped_short_thumb.jpg")
+            self._extract_thumbnail(final_mp4, thumb_path)
+
+            # Step 7: YouTube SEO Metadata Pack
+            short_info = {
+                "short_index": idx,
+                "title": f"{clip.title.upper()} 😱 #shorts",
+                "start_time": clip.start_time,
+                "duration_seconds": clip.duration,
+                "virality_score": clip.virality_score,
+                "hook_header": header_text,
+                "final_video_path": final_mp4,
+                "thumbnail_path": thumb_path,
+                "description": (
+                    f"Watch this viral moment: {clip.title}!\n\n"
+                    f"Follow for more viral clips & highlights.\n\n"
+                    f"#shorts #viral #funny #trending"
+                ),
+                "tags": ["shorts", "viral", "highlights", "funny", "trending"]
+            }
+
+            with open(os.path.join(short_dir, "metadata.json"), "w", encoding="utf-8") as f:
+                json.dump(short_info, f, indent=2)
+
+            generated_shorts.append(short_info)
+
+        # For backward compatibility, link the top short as the primary output
+        primary_short = generated_shorts[0]
+        top_final_mp4 = os.path.join(self.output_dir, "final_clipped_short.mp4")
+        top_thumb = os.path.join(self.output_dir, "final_clipped_short_thumb.jpg")
+        shutil.copyfile(primary_short["final_video_path"], top_final_mp4)
+        shutil.copyfile(primary_short["thumbnail_path"], top_thumb)
 
         result = {
             "status": "COMPLETED",
-            "title": selected_clip.title,
-            "source": source,
-            "final_video_path": final_mp4,
-            "thumbnail_path": thumb_path,
-            "start_time": selected_clip.start_time,
-            "duration_seconds": selected_clip.duration,
-            "virality_score": selected_clip.virality_score,
-            "source_method": selected_clip.source_method,
+            "total_shorts_generated": len(generated_shorts),
             "reframe_preset": reframe_preset,
-            "all_ranked_candidates": [c.__dict__ for c in candidates[:5]]
+            "caption_preset": caption_preset,
+            "source": source,
+            "primary_short": primary_short,
+            "generated_shorts": generated_shorts,
+            "final_video_path": top_final_mp4,
+            "thumbnail_path": top_thumb,
+            "all_ranked_candidates": [c.__dict__ for c in candidates[:8]]
         }
 
-        report_file = os.path.join(self.output_dir, "clipper_production_report.json")
+        report_file = os.path.join(self.output_dir, "batch_clipping_report.json")
         with open(report_file, "w", encoding="utf-8") as f:
             json.dump(result, f, indent=2)
 
-        logger.info(f"✨ [Director Clipper] Viral Short Ready -> {final_mp4} (Score {selected_clip.virality_score}/100)")
+        logger.info(f"✨ [Director Clipper] Successfully produced {len(generated_shorts)} viral shorts! Master report -> {report_file}")
         return result
 
     def _slice_local_video(self, input_file: str, start_time: str, duration: float, output_file: str) -> str:

@@ -225,6 +225,7 @@ class ClipperCaptionBurner:
 
                         raw_text = " ".join(lines[2:]).strip()
                         raw_text = re.sub(r"<[^>]+>", "", raw_text)
+                        raw_text = re.sub(r"&gt;&gt;|>>|\[[^\]]+\]", "", raw_text).strip()
                         words = [w.strip() for w in raw_text.split() if w.strip()]
                         if not words:
                             continue

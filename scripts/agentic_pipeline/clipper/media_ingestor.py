@@ -83,6 +83,7 @@ class MediaIngestor:
         saving bandwidth and processing time.
         """
         target_path = os.path.join(self.output_dir, out_filename)
+        os.makedirs(os.path.dirname(target_path), exist_ok=True)
         end_time_sec = self._parse_timestamp_to_seconds(start_time) + duration
         end_time_str = self._format_seconds_to_timestamp(end_time_sec)
 

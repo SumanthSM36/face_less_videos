@@ -119,35 +119,107 @@ class ViralMomentDetector:
         return candidates
 
     def _scan_subtitles_for_hooks(self, srt_file: str, duration: float) -> List[ViralClipCandidate]:
-        """Scans SRT for high-curiosity opening questions and revelations."""
-        candidates = []
+        """
+        Deep full-video transcript scanner.
+        Evaluates dialogue windows across the entire video for hook strength,
+        conversational energy, and punchline climax, returning non-overlapping viral moments.
+        """
+        candidates: List[ViralClipCandidate] = []
         try:
             with open(srt_file, "r", encoding="utf-8", errors="ignore") as f:
                 content = f.read()
 
             blocks = content.strip().split("\n\n")
+            entries = []
             for b in blocks:
                 lines = b.strip().split("\n")
                 if len(lines) >= 3:
-                    time_line = lines[1]
-                    text_line = " ".join(lines[2:])
-                    # Look for questions or strong hook words
-                    if "?" in text_line or any(w in text_line.lower() for w in ["the secret", "truth is", "reason why", "nobody knows"]):
-                        match = re.search(r"(\d{2}:\d{2}:\d{2})", time_line)
-                        if match:
-                            st = match.group(1)
-                            candidates.append(ViralClipCandidate(
-                                start_time=st,
-                                duration=duration,
-                                title=text_line[:40],
-                                hook_phrase=text_line[:60],
-                                virality_score=92,
-                                source_method="transcript"
-                            ))
-                            if len(candidates) >= 3:
-                                break
+                    tm = re.search(r"(\d{2}:\d{2}:\d{2}[,\.]\d{3})\s*-->\s*(\d{2}:\d{2}:\d{2}[,\.]\d{3})", lines[1])
+                    if tm:
+                        def to_sec(s):
+                            p = s.replace(",", ".").split(":")
+                            return float(p[0]) * 3600 + float(p[1]) * 60 + float(p[2])
+                        s_sec = to_sec(tm.group(1))
+                        e_sec = to_sec(tm.group(2))
+                        raw_text = " ".join(lines[2:]).strip()
+                        raw_text = re.sub(r"<[^>]+>", "", raw_text)
+                        raw_text = re.sub(r">>", "", raw_text).strip()
+                        if raw_text:
+                            entries.append((s_sec, e_sec, raw_text))
+
+            if not entries:
+                return []
+
+            total_dur = entries[-1][1]
+            step = 10.0
+            scored_windows = []
+
+            for cur_t in [i * step for i in range(int(total_dur // step))]:
+                win_end = cur_t + duration
+                win_entries = [e for e in entries if e[0] >= cur_t and e[1] <= win_end]
+                if not win_entries:
+                    continue
+
+                first_few = " ".join([e[2] for e in win_entries[:3]]).lower()
+                full_text = " ".join([e[2] for e in win_entries])
+                last_few = " ".join([e[2] for e in win_entries[-3:]]).lower()
+
+                score = 65
+                # 1. Hook score in first 3 lines
+                for kw in self.VIRAL_KEYWORDS:
+                    if kw in first_few:
+                        score += 5
+                for extra_cue in ["wait", "what", "why", "yo", "bro", "look", "cops", "police", "officer", "spiderman", "gwen", "crazy", "insane", "no way", "oh my god", "hold on", "run", "tackle"]:
+                    if extra_cue in first_few:
+                        score += 5
+                if "?" in first_few or "!" in first_few:
+                    score += 8
+
+                # 2. Dialogue pacing & energy
+                word_count = len(full_text.split())
+                if word_count > 60:
+                    score += 8
+                elif word_count > 40:
+                    score += 4
+
+                # 3. Climax / reaction in last lines
+                if "?" in last_few or "!" in last_few or any(w in last_few for w in ["bro", "way", "insane", "crazy", "god", "let's go"]):
+                    score += 6
+
+                score = min(score, 99)
+                if score >= 80:
+                    # Synthesize clean title from opening sentence
+                    first_sent = full_text.split(".")[0].split("?")[0].strip()
+                    if len(first_sent) > 40:
+                        first_sent = first_sent[:40] + "..."
+                    scored_windows.append((cur_t, score, first_sent, full_text[:90]))
+
+            # Sort descending by virality score
+            scored_windows.sort(key=lambda x: x[1], reverse=True)
+
+            # Greedily pick non-overlapping top moments
+            selected_times: List[float] = []
+            for st_sec, sc, title, snippet in scored_windows:
+                if any(abs(st_sec - prev) < (duration * 0.8) for prev in selected_times):
+                    continue
+                selected_times.append(st_sec)
+
+                st_ts = self._format_sec_to_ts(st_sec)
+                candidates.append(ViralClipCandidate(
+                    start_time=st_ts,
+                    duration=duration,
+                    title=title,
+                    hook_phrase=f"{title.upper()}",
+                    virality_score=sc,
+                    source_method="transcript_scanner"
+                ))
+                if len(candidates) >= 8:
+                    break
+
+            logger.info(f"🎯 Full-video transcript scanner discovered {len(candidates)} high-potential viral moments!")
         except Exception as e:
-            logger.debug(f"Subtitle hook scan skipped: {e}")
+            logger.warning(f"Full-video transcript scan error: {e}")
+
         return candidates
 
     def _detect_audio_peaks(self, media_path: str, duration: float) -> Optional[ViralClipCandidate]:
