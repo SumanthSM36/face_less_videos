@@ -96,7 +96,8 @@ class ClipperCaptionBurner:
         start_time_ts: str,
         clip_duration: float,
         output_mp4: str,
-        preset: str = "hormozi_pop"
+        preset: str = "hormozi_pop",
+        header_title: Optional[str] = None
     ) -> str:
         """
         Builds word-level kinetic ASS and burns onto video.
@@ -104,18 +105,17 @@ class ClipperCaptionBurner:
         ffmpeg = get_ffmpeg_path()
         ass_path = os.path.join(self.output_dir, "kinetic_clip_subtitles.ass")
 
-        has_subtitles = False
-        if srt_path and os.path.exists(srt_path):
-            has_subtitles = self._generate_kinetic_ass(
-                srt_path=srt_path,
-                clip_start_ts=start_time_ts,
-                duration=clip_duration,
-                out_ass=ass_path,
-                preset_name=preset
-            )
+        has_subtitles = self._generate_kinetic_ass(
+            srt_path=srt_path,
+            clip_start_ts=start_time_ts,
+            duration=clip_duration,
+            out_ass=ass_path,
+            preset_name=preset,
+            header_title=header_title
+        )
 
         if not has_subtitles:
-            logger.info("ℹ️ No subtitles available for clipping; returning clean video.")
+            logger.info("ℹ️ No subtitles or headers available for clipping; returning clean video.")
             import shutil
             shutil.copyfile(video_path, output_mp4)
             return output_mp4
@@ -145,16 +145,18 @@ class ClipperCaptionBurner:
 
     def _generate_kinetic_ass(
         self,
-        srt_path: str,
+        srt_path: Optional[str],
         clip_start_ts: str,
         duration: float,
         out_ass: str,
-        preset_name: str = "hormozi_pop"
+        preset_name: str = "hormozi_pop",
+        header_title: Optional[str] = None
     ) -> bool:
         """
         Parses SRT, offsets timestamps, performs 2-3 word chunking,
         injects contextual emojis, and creates active word karaoke highlighting.
         """
+        import textwrap
         style = self.STYLE_PRESETS.get(preset_name, self.STYLE_PRESETS["hormozi_pop"])
         clip_start_sec = self._parse_ts_to_sec(clip_start_ts)
         clip_end_sec = clip_start_sec + duration
@@ -169,88 +171,108 @@ class ClipperCaptionBurner:
             "ScaledBorderAndShadow: yes\n\n"
             "[V4+ Styles]\n"
             "Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding\n"
-            f"Style: KineticClipper,{style['font']},{style['size']},{style['base_color']},{style['highlight_color']},{style['outline_color']},{style['shadow_color']},-1,0,0,0,100,100,2,0,1,{style['outline']},{style['shadow']},2,40,40,450,1\n\n"
+            f"Style: KineticClipper,{style['font']},{style['size']},{style['base_color']},{style['highlight_color']},{style['outline_color']},{style['shadow_color']},-1,0,0,0,100,100,2,0,1,{style['outline']},{style['shadow']},2,40,40,450,1\n"
+            f"Style: HookHeader,{style['font']},56,&H00FFFFFF&,{style['highlight_color']},{style['outline_color']},{style['shadow_color']},-1,0,0,0,100,100,1,0,1,{style['outline']},{style['shadow']},8,50,50,300,1\n\n"
             "[Events]\n"
             "Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text\n"
         )
 
         dialogue_events: List[str] = []
 
-        try:
-            with open(srt_path, "r", encoding="utf-8", errors="ignore") as f:
-                content = f.read()
+        # Add top viral hook headline banner if specified
+        if header_title and len(header_title.strip()) >= 3:
+            clean_title = re.split(r"\|| - |\(|\[", header_title)[0].strip().upper()
+            lines = textwrap.wrap(clean_title, width=22)
+            yellow = f"{{\\c{style['highlight_color']}}}"
+            white = f"{{\\c{style['base_color']}}}"
+            nl = r"\N"
+            if len(lines) == 1:
+                header_text_styled = f"{yellow}{lines[0]}"
+            elif len(lines) >= 2:
+                rest = " ".join(lines[1:])
+                header_text_styled = f"{yellow}{lines[0]}{nl}{white}{rest}"
+            else:
+                header_text_styled = f"{yellow}{clean_title}"
 
-            blocks = content.strip().split("\n\n")
-            for b in blocks:
-                lines = b.strip().split("\n")
-                if len(lines) >= 3:
-                    time_match = re.search(r"(\d{2}:\d{2}:\d{2}[,\.]\d{3})\s*-->\s*(\d{2}:\d{2}:\d{2}[,\.]\d{3})", lines[1])
-                    if not time_match:
-                        continue
-                    s_str, e_str = time_match.group(1), time_match.group(2)
-                    s_sec = self._parse_srt_time(s_str)
-                    e_sec = self._parse_srt_time(e_str)
+            end_ass_time = self._format_ass_time(duration)
+            dialogue_events.append(f"Dialogue: 1,0:00:00.00,{end_ass_time},HookHeader,,0,0,0,,{header_text_styled}")
 
-                    # Check window overlap
-                    if e_sec <= clip_start_sec or s_sec >= clip_end_sec:
-                        continue
+        if srt_path and os.path.exists(srt_path):
+            try:
+                with open(srt_path, "r", encoding="utf-8", errors="ignore") as f:
+                    content = f.read()
 
-                    rel_start = max(0.0, s_sec - clip_start_sec)
-                    rel_end = min(duration, e_sec - clip_start_sec)
-                    block_dur = rel_end - rel_start
-                    if block_dur < 0.2:
-                        continue
+                blocks = content.strip().split("\n\n")
+                for b in blocks:
+                    lines = b.strip().split("\n")
+                    if len(lines) >= 3:
+                        time_match = re.search(r"(\d{2}:\d{2}:\d{2}[,\.]\d{3})\s*-->\s*(\d{2}:\d{2}:\d{2}[,\.]\d{3})", lines[1])
+                        if not time_match:
+                            continue
+                        s_str, e_str = time_match.group(1), time_match.group(2)
+                        s_sec = self._parse_srt_time(s_str)
+                        e_sec = self._parse_srt_time(e_str)
 
-                    raw_text = " ".join(lines[2:]).strip()
-                    raw_text = re.sub(r"<[^>]+>", "", raw_text)
-                    words = [w.strip() for w in raw_text.split() if w.strip()]
-                    if not words:
-                        continue
+                        # Check window overlap
+                        if e_sec <= clip_start_sec or s_sec >= clip_end_sec:
+                            continue
 
-                    # Break into 2-3 word chunks
-                    chunk_size = 2 if len(words) <= 4 else 3
-                    chunks = [words[i:i + chunk_size] for i in range(0, len(words), chunk_size)]
-                    chunk_dur = block_dur / len(chunks)
+                        rel_start = max(0.0, s_sec - clip_start_sec)
+                        rel_end = min(duration, e_sec - clip_start_sec)
+                        block_dur = rel_end - rel_start
+                        if block_dur < 0.2:
+                            continue
 
-                    for c_idx, chunk in enumerate(chunks):
-                        c_start = rel_start + (c_idx * chunk_dur)
-                        c_end = c_start + chunk_dur
+                        raw_text = " ".join(lines[2:]).strip()
+                        raw_text = re.sub(r"<[^>]+>", "", raw_text)
+                        words = [w.strip() for w in raw_text.split() if w.strip()]
+                        if not words:
+                            continue
 
-                        # Generate active word karaoke events within chunk
-                        word_dur = chunk_dur / len(chunk)
-                        for w_idx in range(len(chunk)):
-                            w_start = c_start + (w_idx * word_dur)
-                            w_end = w_start + word_dur
+                        # Break into 2-3 word chunks
+                        chunk_size = 2 if len(words) <= 4 else 3
+                        chunks = [words[i:i + chunk_size] for i in range(0, len(words), chunk_size)]
+                        chunk_dur = block_dur / len(chunks)
 
-                            # Build formatted text with active word highlighted
-                            formatted_words = []
-                            for idx, w in enumerate(chunk):
-                                clean_word = w.upper()
-                                if idx == w_idx:
-                                    # Active word: pop bounce + highlight color
-                                    pop_tag = "{\\t(0,70,\\fscx112\\fscy112)}"
-                                    highlight_tag = f"{{\\c{style['highlight_color']}}}"
-                                    reset_tag = f"{{\\c{style['base_color']}}}"
-                                    formatted_words.append(f"{pop_tag}{highlight_tag}{clean_word}{reset_tag}")
-                                else:
-                                    formatted_words.append(clean_word)
+                        for c_idx, chunk in enumerate(chunks):
+                            c_start = rel_start + (c_idx * chunk_dur)
+                            c_end = c_start + chunk_dur
 
-                            line_text = " ".join(formatted_words)
-                            ass_s = self._format_ass_time(w_start)
-                            ass_e = self._format_ass_time(w_end)
-                            dialogue_events.append(f"Dialogue: 0,{ass_s},{ass_e},KineticClipper,,0,0,0,,{line_text}")
+                            # Generate active word karaoke events within chunk
+                            word_dur = chunk_dur / len(chunk)
+                            for w_idx in range(len(chunk)):
+                                w_start = c_start + (w_idx * word_dur)
+                                w_end = w_start + word_dur
 
-            if not dialogue_events:
-                return False
+                                # Build formatted text with active word highlighted
+                                formatted_words = []
+                                for idx, w in enumerate(chunk):
+                                    clean_word = w.upper()
+                                    if idx == w_idx:
+                                        # Active word: pop bounce + highlight color
+                                        pop_tag = "{\\t(0,70,\\fscx112\\fscy112)}"
+                                        highlight_tag = f"{{\\c{style['highlight_color']}}}"
+                                        reset_tag = f"{{\\c{style['base_color']}}}"
+                                        formatted_words.append(f"{pop_tag}{highlight_tag}{clean_word}{reset_tag}")
+                                    else:
+                                        formatted_words.append(clean_word)
 
-            with open(out_ass, "w", encoding="utf-8") as f:
-                f.write(ass_header + "\n".join(dialogue_events) + "\n")
+                                line_text = " ".join(formatted_words)
+                                ass_s = self._format_ass_time(w_start)
+                                ass_e = self._format_ass_time(w_end)
+                                dialogue_events.append(f"Dialogue: 0,{ass_s},{ass_e},KineticClipper,,0,0,0,,{line_text}")
 
-            logger.info(f"🚀 Generated {len(dialogue_events)} kinetic word-highlight caption events.")
-            return True
-        except Exception as e:
-            logger.warning(f"Kinetic caption generation error: {e}")
+            except Exception as e:
+                logger.warning(f"Kinetic caption generation error: {e}")
+
+        if not dialogue_events:
             return False
+
+        with open(out_ass, "w", encoding="utf-8") as f:
+            f.write(ass_header + "\n".join(dialogue_events) + "\n")
+
+        logger.info(f"🚀 Generated {len(dialogue_events)} kinetic word-highlight & banner events.")
+        return True
 
     def _find_contextual_emoji(self, words: List[str]) -> str:
         for w in words:

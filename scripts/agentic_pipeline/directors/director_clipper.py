@@ -110,28 +110,21 @@ class DirectorClipper:
             preset=reframe_preset
         )
 
-        # Step 5: Kinetic Subtitle Burning (Attractive Hormozi / MrBeast Style)
-        captioned_path = os.path.join(self.output_dir, "captioned_vertical.mp4")
+        # Step 5: Kinetic Subtitle Burning & Hook Headline (Attractive Hormozi / MrBeast Style)
+        final_mp4 = os.path.join(self.output_dir, "final_clipped_short.mp4")
         caption_preset = intent.extra_instructions.get("caption_preset", "hormozi_pop")
+        header_text = intent.extra_instructions.get("header_title", selected_clip.title)
         self.captioner.burn_subtitles_onto_clip(
             video_path=reframed_path,
             srt_path=srt_path,
             start_time_ts=selected_clip.start_time,
             clip_duration=selected_clip.duration,
-            output_mp4=captioned_path,
-            preset=caption_preset
+            output_mp4=final_mp4,
+            preset=caption_preset,
+            header_title=header_text
         )
 
-        # Step 6: Viral Headline / Hook Overlay
-        final_mp4 = os.path.join(self.output_dir, "final_clipped_short.mp4")
-        header_text = intent.extra_instructions.get("header_title", selected_clip.title)
-        self.hook_overlay.add_hook_header(
-            input_video=captioned_path,
-            header_text=header_text,
-            output_video=final_mp4
-        )
-
-        # Step 7: Frame 0 Thumbnail Extraction
+        # Step 6: Frame 0 Thumbnail Extraction
         thumb_path = os.path.join(self.output_dir, "final_clipped_short_thumb.jpg")
         self._extract_thumbnail(final_mp4, thumb_path)
 

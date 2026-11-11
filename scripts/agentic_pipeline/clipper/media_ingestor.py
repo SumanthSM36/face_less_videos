@@ -54,6 +54,7 @@ class MediaIngestor:
         """Fetches video title, chapters, and description without downloading."""
         cmd = [
             sys.executable, "-m", "yt_dlp",
+            "--extractor-args", "youtube:player_client=android",
             "--dump-json",
             "--skip-download",
             "--no-warnings",
@@ -88,8 +89,11 @@ class MediaIngestor:
         section_spec = f"*{start_time}-{end_time_str}"
         logger.info(f"📥 Fast-downloading section {section_spec} from {url}...")
 
+        from ..models.ffmpeg_utils import get_ffmpeg_path
         cmd = [
             sys.executable, "-m", "yt_dlp",
+            "--ffmpeg-location", get_ffmpeg_path(),
+            "--extractor-args", "youtube:player_client=android",
             "-f", "bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best",
             "--download-sections", section_spec,
             "--force-keyframes-at-cuts",
@@ -109,8 +113,11 @@ class MediaIngestor:
     def download_full(self, url: str, out_filename: str = "source_full.mp4") -> str:
         """Full download fallback."""
         target_path = os.path.join(self.output_dir, out_filename)
+        from ..models.ffmpeg_utils import get_ffmpeg_path
         cmd = [
             sys.executable, "-m", "yt_dlp",
+            "--ffmpeg-location", get_ffmpeg_path(),
+            "--extractor-args", "youtube:player_client=android",
             "-f", "bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best",
             "--merge-output-format", "mp4",
             "-o", target_path,
@@ -122,11 +129,13 @@ class MediaIngestor:
     def download_subtitles(self, url: str) -> Optional[str]:
         """Downloads YouTube captions as SRT for synchronized kinetic typography."""
         sub_prefix = os.path.join(self.output_dir, "yt_subtitles")
+        from ..models.ffmpeg_utils import get_ffmpeg_path
         cmd = [
             sys.executable, "-m", "yt_dlp",
+            "--ffmpeg-location", get_ffmpeg_path(),
+            "--extractor-args", "youtube:player_client=android",
             "--write-auto-sub",
-            "--write-sub",
-            "--sub-lang", "en,hi",
+            "--sub-lang", "en",
             "--convert-subs", "srt",
             "--skip-download",
             "-o", sub_prefix,
