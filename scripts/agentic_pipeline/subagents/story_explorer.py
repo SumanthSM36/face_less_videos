@@ -79,31 +79,65 @@ class StoryExplorer:
             ]
 
     def _source_media_assets(self, query: str, count: int) -> List[SourcedAsset]:
-        """Sources open media or falls back to procedural visual asset generators."""
+        """Sources genuine running motion video assets or falls back to procedural living visual assets."""
+        import urllib.request
+        import urllib.parse
         assets = []
+        motion_dir = os.path.join(self.output_dir, "motion_assets")
+        os.makedirs(motion_dir, exist_ok=True)
+
+        video_hits = []
+        # 1. Check Wikimedia Commons open videos
         try:
             from wikimedia_connector import search_wikimedia_videos
-            wiki_results = search_wikimedia_videos(query, limit=count)
-            for i, w in enumerate(wiki_results):
-                assets.append(SourcedAsset(
-                    asset_id=f"wiki_{i+1}",
-                    source_type="wikimedia",
-                    file_path=w.get("url", ""),
-                    description=w.get("title", ""),
-                    resolution="1080x1920",
-                    license_type="Public Domain / CC0"
-                ))
+            v_hits = search_wikimedia_videos(query, limit=count)
+            video_hits.extend(v_hits)
         except Exception as e:
             logger.warning(f"Wikimedia connector query skipped: {e}")
 
-        # If zero online assets retrieved, create structured placeholders
-        if not assets:
-            for i in range(count):
+        # 2. Check NASA open videos if cosmic/earth/space
+        try:
+            from nasa_connector import search_nasa_videos
+            n_hits = search_nasa_videos(query, limit=count)
+            video_hits.extend(n_hits)
+        except Exception:
+            pass
+
+        # Download matching motion video clips
+        for i, hit in enumerate(video_hits[:count]):
+            url = hit.get("url")
+            if not url:
+                continue
+            ext = ".webm" if ".webm" in url.lower() else ".mp4"
+            local_clip = os.path.join(motion_dir, f"motion_source_{i+1:02d}{ext}")
+            try:
+                clean_url = urllib.parse.quote(url, safe=":/%?=&")
+                req = urllib.request.Request(clean_url, headers={"User-Agent": "AntigravityMotionVisuals/1.0"})
+                with urllib.request.urlopen(req, timeout=15.0) as resp:
+                    with open(local_clip, "wb") as f:
+                        f.write(resp.read())
+                if os.path.exists(local_clip) and os.path.getsize(local_clip) > 5000:
+                    assets.append(SourcedAsset(
+                        asset_id=f"motion_video_{i+1}",
+                        source_type=hit.get("source", "open_video"),
+                        file_path=local_clip,
+                        description=hit.get("title", f"Motion video clip {i+1}"),
+                        resolution="1080x1920",
+                        license_type="Public Domain / CC0"
+                    ))
+            except Exception as e:
+                logger.warning(f"Could not download motion clip from {url[:50]}: {e}")
+
+        # Fallback to curated 3D keyframe masterworks if video count < count
+        needed = count - len(assets)
+        if needed > 0:
+            for i in range(needed):
+                idx = len(assets) + 1
                 assets.append(SourcedAsset(
-                    asset_id=f"scene_asset_{i+1}",
+                    asset_id=f"scene_asset_{idx}",
                     source_type="curated_masterwork",
-                    file_path=os.path.join(self.output_dir, f"scene_{i+1:02d}.png"),
-                    description=f"Curated 3D Pixar render frame for scene {i+1}",
+                    file_path=os.path.join(self.output_dir, f"scene_{idx:02d}.png"),
+                    description=f"Curated 3D Pixar render frame for scene {idx}",
                     resolution="1080x1920",
                     license_type="Original Studio Masterwork"
                 ))

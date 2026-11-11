@@ -70,8 +70,12 @@ class DirectorShorts:
             blueprint
         )
 
-        # Prepare 5 scene keyframes (use provided or fallback to curated masterwork assets)
-        if not reference_keyframes or len(reference_keyframes) < 5:
+        # Check if dossier sourced genuine motion video assets
+        dossier_assets = [a["file_path"] for a in dossier.get("assets", []) if os.path.exists(a.get("file_path", ""))]
+        if dossier_assets and len(dossier_assets) >= 5:
+            reference_keyframes = dossier_assets[:5]
+            logger.info(f"🎞️ Using {len(reference_keyframes)} sourced motion assets from Story Explorer.")
+        elif not reference_keyframes or len(reference_keyframes) < 5:
             reference_keyframes = self._resolve_fallback_keyframes(dossier, animator_dir)
 
         # Step 4: Agent Animator (with Character Designer & Motion Maker)

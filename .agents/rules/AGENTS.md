@@ -48,3 +48,10 @@ When authoring or generating short-form vertical videos (YouTube Shorts, TikTok,
 - **Mandatory Pre-Flight Scan:** Before writing a script, generating visual assets, or rendering a new video, the agent MUST scan the authenticated YouTube channel's uploaded catalog (`scripts/check_youtube_duplicates.py`).
 - **Zero Duplicates Policy:** If a proposed story topic, historical event, scientific paradox, or character adventure has already been covered on the channel, HALT production immediately.
 - **Collision Resolution:** Present the user with the direct link to the published video (`https://youtube.com/shorts/<id>`) and provide 3 fresh, unexplored alternative angles or chronological sequels. Never produce redundant content.
+
+## 10. Strict Ban on Screenshot Slideshows (Mandatory Proper Animated Motion)
+- **Zero Static Screenshots:** Never produce videos from static still images, slides, or flat screenshots with robotic digital zoom.
+- **Mandatory Proper Motion:** All visual scenes must feature genuine running motion:
+  1. **Running Video Footage:** Sourced from verified open archives (NASA, Wikimedia Commons, Archive.org / Prelinger, Pexels) with continuous 30fps physical motion (flowing water, raging fire, celestial motion, battle atmospheres).
+  2. **Living Multi-Layer Procedural Animation:** When character keyframes are animated, they must be rendered with multi-axis organic handheld camera drift, scrolling atmospheric particle simulations (golden embers/stardust), breathing volumetric light sweeps, and dynamic velocity cuts.
+

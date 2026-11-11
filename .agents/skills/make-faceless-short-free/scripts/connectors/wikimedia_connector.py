@@ -21,7 +21,7 @@ def search_wikimedia_videos(query, limit=3):
         "action": "query",
         "format": "json",
         "generator": "search",
-        "gsrsearch": f"filetype:video {clean_query}",
+        "gsrsearch": f"filemime:video/webm|video/mp4 {clean_query}",
         "gsrnamespace": "6",
         "gsrlimit": str(limit),
         "prop": "imageinfo",
@@ -38,9 +38,11 @@ def search_wikimedia_videos(query, limit=3):
             ii = page.get("imageinfo", [{}])[0]
             url = ii.get("url")
             if url and any(url.lower().endswith(ext) for ext in [".webm", ".mp4", ".ogv"]):
+                # Ensure URL is properly quoted
+                clean_url = urllib.parse.quote(url, safe=":/%?=&")
                 results.append({
                     "title": page.get("title", ""),
-                    "url": url,
+                    "url": clean_url,
                     "source": "wikimedia"
                 })
         return results

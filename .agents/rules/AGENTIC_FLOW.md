@@ -37,7 +37,7 @@ flowchart TD
    - **Agent Story Explorer**: Gathers authentic facts and sources CC0/PD assets.
    - **Agent Story Writer**: Drafts 5-scene emotional story structure with infinite loop.
    - **Agent Screenplay Director**: 10 camera cuts (2.5-3.5s rhythm) and safe zone at $Y=1450\text{px}$.
-   - **Agent Animator**: Enforces 3D Pixar consistency (Character Designer) and generates 2.5D optical motion (Motion Maker).
+   - **Agent Animator**: Enforces 3D Pixar consistency (Character Designer) and generates **proper animated motion** (Motion Maker) using running video footage and multi-layer living procedural particle/lighting animation—**strictly banning flat screenshot zooms**.
    - **Agent Script Writer**: Punchy lines ($<12$ words/sentence) and ASS kinetic subtitles.
    - **Agent Voice Creator**: Studio Vocal Mastering (-16 LUFS, 280Hz EQ, 3200Hz de-essing, dynamic ducking).
    - **Agent Video Renderer**: FFmpeg assembly, 35mm grain, lens vignette, Frame 0 thumbnail.

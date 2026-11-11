@@ -172,7 +172,7 @@ def download_open_motion_clip(query: str, output_path: str, duration_sec: float 
 
     # Download first working candidate
     for cand in candidates:
-        url = cand["url"]
+        url = urllib.parse.quote(cand["url"], safe=":/%?=&")
         temp_dl = output_path + ".temp.mp4"
         try:
             print(f"⬇️ Downloading open motion clip: {cand.get('title', 'clip')[:50]}...")
