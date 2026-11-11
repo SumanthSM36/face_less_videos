@@ -64,27 +64,36 @@ class MotionMaker:
                 output_clip_path
             ]
         else:
-            # Mode B: Multi-Layer Living Animation Engine (Strict Anti-Screenshot Gate)
+            # Mode B: Multi-Layer Living Animation Engine (Action-Responsive Physical Motion)
             logger.info(f"✨ Agent Motion Maker: Synthesizing living animated motion picture {cut.cut_number} ({duration:.1f}s)...")
             m = cut.motion_type
-            if "zoom_in" in m or "push" in m:
-                cam = f"zoompan=z='1.12+0.0018*on':x='iw/2-(iw/zoom/2)+sin(on/25)*25':y='ih/2-(ih/zoom/2)+cos(on/30)*15':d={total_frames}:s=1080x1920:fps={fps}"
+            if "upward" in m or "leap" in m or "launch" in m:
+                # Fast upward acceleration mimicking a physical leap into the sky
+                cam = f"zoompan=z='min(1.15+0.0025*on,1.38)':x='iw/2-(iw/zoom/2)+sin(on/20)*15':y='max(ih-(ih/zoom)-(on*1.8),0)':d={total_frames}:s=1080x1920:fps={fps}"
+                particle_scroll = "scroll=horizontal=0.001:vertical=-0.012"
+            elif "flight" in m or "glide" in m or "horizontal" in m:
+                # Hypersonic horizontal flight tracking with horizontal wind streaks
+                cam = f"zoompan=z='1.20+0.001*on':x='min((on*2.0),iw-(iw/zoom))':y='ih/2-(ih/zoom/2)+sin(on/20)*12':d={total_frames}:s=1080x1920:fps={fps}"
+                particle_scroll = "scroll=horizontal=-0.015:vertical=0.002"
+            elif "zoom_in" in m or "push" in m:
+                cam = f"zoompan=z='1.12+0.0022*on':x='iw/2-(iw/zoom/2)+sin(on/25)*25':y='ih/2-(ih/zoom/2)+cos(on/30)*15':d={total_frames}:s=1080x1920:fps={fps}"
+                particle_scroll = "scroll=horizontal=0.003:vertical=-0.006"
             elif "zoom_out" in m or "pullback" in m:
-                cam = f"zoompan=z='max(1.22-0.0018*on,1.05)':x='iw/2-(iw/zoom/2)+cos(on/25)*20':y='ih/2-(ih/zoom/2)+sin(on/30)*15':d={total_frames}:s=1080x1920:fps={fps}"
-            elif "upward" in m:
-                cam = f"zoompan=z='1.16':x='iw/2-(iw/zoom/2)+sin(on/30)*15':y='ih-(ih/zoom)-(on*0.7)':d={total_frames}:s=1080x1920:fps={fps}"
+                cam = f"zoompan=z='max(1.30-0.0025*on,1.06)':x='iw/2-(iw/zoom/2)+cos(on/25)*20':y='ih/2-(ih/zoom/2)+sin(on/30)*15':d={total_frames}:s=1080x1920:fps={fps}"
+                particle_scroll = "scroll=horizontal=-0.004:vertical=0.005"
             else:
-                cam = f"zoompan=z='1.14+0.04*sin(on/35)':x='iw/2-(iw/zoom/2)+sin(on/20)*30':y='ih/2-(ih/zoom/2)+cos(on/25)*20':d={total_frames}:s=1080x1920:fps={fps}"
+                cam = f"zoompan=z='1.16+0.04*sin(on/35)':x='iw/2-(iw/zoom/2)+sin(on/20)*30':y='ih/2-(ih/zoom/2)+cos(on/25)*20':d={total_frames}:s=1080x1920:fps={fps}"
+                particle_scroll = "scroll=horizontal=0.002:vertical=-0.005"
 
-            # Filtergraph: Base Camera Float + Procedural Living Particle Stream + Breathing Volumetric Light
+            # Filtergraph: Action Camera Float + Physical Wind/Stardust Particle Stream + Breathing Volumetric Light
             filter_complex = (
                 f"[0:v]scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,{cam}[base];"
                 f"nullsrc=s=1080x1920:d={duration}:r={fps},"
-                "geq=r='if(gt(random(1)*1000,985),255,0)':g='if(gt(random(2)*1000,985),220,0)':b='if(gt(random(3)*1000,985),140,0)',"
+                "geq=r='if(gt(random(1)*1000,982),255,0)':g='if(gt(random(2)*1000,982),225,0)':b='if(gt(random(3)*1000,982),150,0)',"
                 "boxblur=2:1,"
-                "scroll=horizontal=0.003:vertical=-0.006[particles];"
-                "[base][particles]blend=all_mode=screen:all_opacity=0.85[lit];"
-                "[lit]eq=contrast='1.14+0.04*sin(t*2.5)':saturation='1.20+0.05*cos(t*2.0)',"
+                f"{particle_scroll}[particles];"
+                "[base][particles]blend=all_mode=screen:all_opacity=0.88[lit];"
+                "[lit]eq=contrast='1.14+0.05*sin(t*2.8)':saturation='1.20+0.06*cos(t*2.2)',"
                 "vignette=PI/4.2[outv]"
             )
 

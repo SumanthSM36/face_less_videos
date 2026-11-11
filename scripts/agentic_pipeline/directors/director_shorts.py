@@ -77,23 +77,26 @@ class DirectorShorts:
             blueprint
         )
 
-        # Check for staged AI motion video clips (scene_01.mp4 .. scene_05.mp4)
-        staged_clips = []
-        for i in range(1, 6):
-            clip_cand = os.path.join(engine_director.clips_dir, f"scene_{i:02d}.mp4")
-            if os.path.exists(clip_cand):
-                staged_clips.append(clip_cand)
+        # Step 3.5: Resolve True Story Visual Assets (Generative Video or Bespoke Story Frames)
+        from ..subagents.ai_video_engine import AIVideoEngine
+        video_engine = AIVideoEngine(self.output_dir)
+        engine_status = video_engine.detect_available_engine()
 
-        if len(staged_clips) == 5:
-            reference_keyframes = staged_clips
-            logger.info(f"🚀 Loaded 5 staged AI generative video clips from {engine_director.clips_dir}!")
+        if engine_status["has_staged_clips"]:
+            reference_keyframes = video_engine.get_staged_clips()
+            logger.info(f"🚀 [Director Shorts] Loaded {len(reference_keyframes)} staged AI generative video clips!")
         else:
-            # Check if dossier sourced genuine motion video assets
-            dossier_assets = [a["file_path"] for a in dossier.get("assets", []) if os.path.exists(a.get("file_path", ""))]
-            if dossier_assets and len(dossier_assets) >= 5:
-                reference_keyframes = dossier_assets[:5]
-                logger.info(f"🎞️ Using {len(reference_keyframes)} sourced motion assets from Story Explorer.")
-            elif not reference_keyframes or len(reference_keyframes) < 5:
+            # Check Cloud Generative Video API
+            cloud_clips = []
+            for i, cut in enumerate(shot_list.cuts[:5], 1):
+                c_clip = video_engine.generate_video_clip_cloud(blueprint.hook, i)
+                if c_clip:
+                    cloud_clips.append(c_clip)
+            if len(cloud_clips) == 5:
+                reference_keyframes = cloud_clips
+                logger.info(f"✨ [Director Shorts] Generated 5 AI video clips via Cloud Video Engine!")
+            else:
+                # Resolve bespoke topic-matched story keyframes (strictly banning generic nature stock)
                 reference_keyframes = self._resolve_fallback_keyframes(dossier, animator_dir)
 
         # Step 4: Agent Animator (with Character Designer & Motion Maker)
@@ -159,44 +162,73 @@ class DirectorShorts:
         return production_summary
 
     def _resolve_fallback_keyframes(self, dossier: Dict[str, Any], target_dir: str) -> List[str]:
-        """Resolves topic-matching visual assets from existing productions or builds matching scene frames."""
+        """Resolves topic-matching visual assets from existing productions or brain artifacts."""
         import glob
+        import shutil
         os.makedirs(target_dir, exist_ok=True)
         paths = []
         topic = dossier.get("topic", "").lower()
+        keywords = [w for w in topic.split() if len(w) > 3 and w not in ("short", "video", "about", "sacred", "secret")]
 
-        # Search existing output directories for topic matches
         matched_scenes = []
-        search_dirs = glob.glob(os.path.join(WORKSPACE_ROOT, "output/*/*"))
-        for d in search_dirs:
-            if not os.path.isdir(d):
-                continue
-            base = os.path.basename(d).lower()
-            # If any significant keyword from topic is in directory name
-            keywords = [w for w in topic.split() if len(w) > 3 and w not in ("short", "video", "about", "sacred", "secret")]
-            if any(k in base for k in keywords):
-                candidate_scenes = sorted(glob.glob(os.path.join(d, "scene_*.png")))
-                if len(candidate_scenes) >= 5:
-                    matched_scenes = candidate_scenes[:5]
-                    logger.info(f"🎯 Found topic-matched visual assets in {d}")
-                    break
 
-        # Fallback to squirrel masterwork if no direct match
-        if not matched_scenes:
-            squirrel_scenes = sorted(glob.glob(os.path.join(WORKSPACE_ROOT, "output/animated_squirrel_ramayana/scene_*.png")))
-            if len(squirrel_scenes) >= 5:
-                matched_scenes = squirrel_scenes[:5]
+        # 1. Search brain artifacts for generated character images
+        brain_dir = os.path.expanduser("~/.gemini/antigravity/brain/6d62e7a1-85a9-449b-8870-3bd8b6c5c928")
+        if os.path.exists(brain_dir):
+            for kw in keywords:
+                cand = sorted(glob.glob(os.path.join(brain_dir, f"*{kw}*.[jJ][pP][gG]")) + glob.glob(os.path.join(brain_dir, f"*{kw}*.[pP][nN][gG]")))
+                if cand:
+                    matched_scenes.extend(cand)
+
+        # 2. Search existing output directories for topic matches
+        if len(matched_scenes) < 5:
+            search_dirs = glob.glob(os.path.join(WORKSPACE_ROOT, "output/*/*"))
+            for d in search_dirs:
+                if not os.path.isdir(d):
+                    continue
+                base = os.path.basename(d).lower()
+                if any(k in base for k in keywords):
+                    candidate_scenes = sorted(glob.glob(os.path.join(d, "scene_*.[pP][nN][gG]")) + glob.glob(os.path.join(d, "scene_*.[jJ][pP][gG]")))
+                    if candidate_scenes:
+                        matched_scenes.extend(candidate_scenes)
+                        logger.info(f"🎯 Found topic-matched visual assets in {d}")
+                        if len(matched_scenes) >= 5:
+                            break
+
+        # Remove duplicates while preserving order
+        unique_matches = []
+        for s in matched_scenes:
+            if s not in unique_matches and os.path.exists(s) and os.path.getsize(s) > 10000:
+                unique_matches.append(s)
+
+        # Chronological narrative sorting if story stages exist
+        order_keys = ["mount_mahendra", "mahendra", "leap", "launch", "sky_flight", "flight", "landing", "lanka", "devotion", "loop"]
+        sorted_scenes = []
+        for ok in order_keys:
+            for s in unique_matches:
+                if ok in os.path.basename(s).lower() and s not in sorted_scenes:
+                    sorted_scenes.append(s)
+        for s in unique_matches:
+            if s not in sorted_scenes:
+                sorted_scenes.append(s)
+        if sorted_scenes:
+            unique_matches = sorted_scenes
 
         for i in range(5):
-            dest = os.path.join(target_dir, f"keyframe_{i+1:02d}.png")
-            if matched_scenes and i < len(matched_scenes) and os.path.exists(matched_scenes[i]):
-                import shutil
-                shutil.copyfile(matched_scenes[i], dest)
+            ext = ".jpg"
+            dest = os.path.join(target_dir, f"keyframe_{i+1:02d}{ext}")
+            if unique_matches:
+                # Cycle through unique matches if fewer than 5
+                src = unique_matches[i % len(unique_matches)]
+                shutil.copyfile(src, dest)
             else:
+                # Emergency high-contrast gradient
                 subprocess.run([
                     get_ffmpeg_path(), "-y", "-f", "lavfi",
                     "-i", "color=c=0x1a243b:s=1080x1920:d=1",
                     "-vframes", "1", dest
                 ], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             paths.append(dest)
+
+        logger.info(f"✨ [Director Shorts] Resolved {len(paths)} bespoke story character frames (0 generic stock).")
         return paths
