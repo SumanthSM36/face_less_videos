@@ -110,14 +110,16 @@ class DirectorClipper:
             preset=reframe_preset
         )
 
-        # Step 5: Kinetic Subtitle Burning
+        # Step 5: Kinetic Subtitle Burning (Attractive Hormozi / MrBeast Style)
         captioned_path = os.path.join(self.output_dir, "captioned_vertical.mp4")
+        caption_preset = intent.extra_instructions.get("caption_preset", "hormozi_pop")
         self.captioner.burn_subtitles_onto_clip(
             video_path=reframed_path,
             srt_path=srt_path,
             start_time_ts=selected_clip.start_time,
             clip_duration=selected_clip.duration,
-            output_mp4=captioned_path
+            output_mp4=captioned_path,
+            preset=caption_preset
         )
 
         # Step 6: Viral Headline / Hook Overlay

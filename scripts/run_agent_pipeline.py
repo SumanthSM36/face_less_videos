@@ -23,6 +23,8 @@ def main():
     parser.add_argument("--url", type=str, default=None, help="Source URL for video clipping")
     parser.add_argument("--file", type=str, default=None, help="Source file for video clipping")
     parser.add_argument("--start", type=str, default="00:00:10", help="Clipping start timestamp (e.g. 00:00:15)")
+    parser.add_argument("--caption-style", type=str, default="hormozi_pop", choices=["hormozi_pop", "beast_neon", "pixar_gold", "cyber_cyan"], help="Kinetic typography style preset")
+    parser.add_argument("--reframe", type=str, default="blurred_backdrop", choices=["blurred_backdrop", "split_screen", "crop_center"], help="Vertical 9:16 reframe preset")
 
     args = parser.parse_args()
 
@@ -35,7 +37,9 @@ def main():
         "duration": args.duration,
         "source_url": args.url,
         "source_file": args.file,
-        "start_time": args.start
+        "start_time": args.start,
+        "caption_preset": args.caption_style,
+        "reframe_preset": args.reframe
     }
 
     try:
