@@ -51,7 +51,8 @@ class MotionMaker:
             )
             cmd = [
                 get_ffmpeg_path(), "-y",
-                "-ss", str(cut.start_time % 10),
+                "-stream_loop", "-1",
+                "-ss", str(cut.start_time % 6),
                 "-i", media_path,
                 "-t", str(duration),
                 "-vf", vf,

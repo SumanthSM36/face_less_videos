@@ -38,6 +38,8 @@ class CharacterDesigner:
             char_name = "Pitamaha Bhishma"
         elif "arjuna" in title.lower():
             char_name = "Warrior Arjuna"
+        elif "hanuman" in title.lower():
+            char_name = "Mighty Hanuman"
 
         sheet = CharacterDesignSheet(
             character_name=char_name,
