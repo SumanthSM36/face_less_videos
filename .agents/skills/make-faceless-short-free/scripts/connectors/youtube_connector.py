@@ -6,6 +6,15 @@ Uses YouTube Data API v3 and OAuth 2.0.
 import os
 import json
 import sys
+import socket
+
+# Force IPv4 resolution to prevent macOS IPv6 route stall/timeout
+_orig_getaddrinfo = socket.getaddrinfo
+def _getaddrinfo_ipv4_first(*args, **kwargs):
+    res = _orig_getaddrinfo(*args, **kwargs)
+    ipv4 = [r for r in res if r[0] == socket.AF_INET]
+    return ipv4 if ipv4 else res
+socket.getaddrinfo = _getaddrinfo_ipv4_first
 
 CONNECTOR_DIR = os.path.dirname(os.path.abspath(__file__))
 WORKSPACE_ROOT = os.path.abspath(os.path.join(CONNECTOR_DIR, "../../../../../"))
