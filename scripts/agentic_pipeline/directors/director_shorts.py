@@ -18,9 +18,11 @@ from ..subagents.voice_creator import VoiceCreator
 from ..subagents.video_renderer import VideoRenderer
 from ..subagents.audience_reviewer import AudienceReviewer
 from ..subagents.agent_healer import AgentHealer
+from ..subagents.multi_engine_motion import MultiEngineMotionDirector
 from ..models.ffmpeg_utils import get_ffmpeg_path
 
 logger = logging.getLogger("DirectorShorts")
+WORKSPACE_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../"))
 
 
 class DirectorShorts:
@@ -62,7 +64,12 @@ class DirectorShorts:
             dossier, target_duration=intent.target_duration
         )
 
-        # Step 3: Agent Screenplay Director
+        # Step 3: Multi-Engine Motion Director (Kling, Luma, PixVerse, Open Archives)
+        multi_engine_dir = os.path.join(self.output_dir, "03_multi_engine_motion")
+        engine_director = MultiEngineMotionDirector(multi_engine_dir)
+        engine_specs = engine_director.route_story_scenes(blueprint)
+
+        # Step 4: Agent Screenplay Director
         screenplay = ScreenplayDirector(screenplay_dir)
         shot_list: ScreenplayShotList = self.healer.heal_and_retry(
             "ScreenplayDirector",
@@ -70,13 +77,24 @@ class DirectorShorts:
             blueprint
         )
 
-        # Check if dossier sourced genuine motion video assets
-        dossier_assets = [a["file_path"] for a in dossier.get("assets", []) if os.path.exists(a.get("file_path", ""))]
-        if dossier_assets and len(dossier_assets) >= 5:
-            reference_keyframes = dossier_assets[:5]
-            logger.info(f"🎞️ Using {len(reference_keyframes)} sourced motion assets from Story Explorer.")
-        elif not reference_keyframes or len(reference_keyframes) < 5:
-            reference_keyframes = self._resolve_fallback_keyframes(dossier, animator_dir)
+        # Check for staged AI motion video clips (scene_01.mp4 .. scene_05.mp4)
+        staged_clips = []
+        for i in range(1, 6):
+            clip_cand = os.path.join(engine_director.clips_dir, f"scene_{i:02d}.mp4")
+            if os.path.exists(clip_cand):
+                staged_clips.append(clip_cand)
+
+        if len(staged_clips) == 5:
+            reference_keyframes = staged_clips
+            logger.info(f"🚀 Loaded 5 staged AI generative video clips from {engine_director.clips_dir}!")
+        else:
+            # Check if dossier sourced genuine motion video assets
+            dossier_assets = [a["file_path"] for a in dossier.get("assets", []) if os.path.exists(a.get("file_path", ""))]
+            if dossier_assets and len(dossier_assets) >= 5:
+                reference_keyframes = dossier_assets[:5]
+                logger.info(f"🎞️ Using {len(reference_keyframes)} sourced motion assets from Story Explorer.")
+            elif not reference_keyframes or len(reference_keyframes) < 5:
+                reference_keyframes = self._resolve_fallback_keyframes(dossier, animator_dir)
 
         # Step 4: Agent Animator (with Character Designer & Motion Maker)
         animator = Animator(animator_dir)
@@ -129,7 +147,9 @@ class DirectorShorts:
             "audience_verdict": scorecard.recommendation,
             "healing_events_count": len(self.healer.healing_history),
             "shot_list_cuts": shot_list.total_cuts,
-            "safe_zone_y": 1450
+            "safe_zone_y": 1450,
+            "multi_engine_specs": [s.__dict__ for s in engine_specs],
+            "ai_prompt_deck": os.path.join(multi_engine_dir, "AI_VIDEO_PROMPT_DECK.md")
         }
 
         with open(os.path.join(self.output_dir, "director_production_report.json"), "w", encoding="utf-8") as f:
@@ -139,28 +159,43 @@ class DirectorShorts:
         return production_summary
 
     def _resolve_fallback_keyframes(self, dossier: Dict[str, Any], target_dir: str) -> List[str]:
-        """Ensures 5 valid keyframes exist for the animation pipeline."""
+        """Resolves topic-matching visual assets from existing productions or builds matching scene frames."""
+        import glob
         os.makedirs(target_dir, exist_ok=True)
         paths = []
-        # Check if assets exist in earlier output directories
-        sample_assets = [
-            "/Users/sumanth/Downloads/New/output/epic_facts_10/short_01_urmila_slumber/scene_01.png",
-            "/Users/sumanth/Downloads/New/output/epic_facts_10/short_01_urmila_slumber/scene_02.png",
-            "/Users/sumanth/Downloads/New/output/epic_facts_10/short_01_urmila_slumber/scene_03.png",
-            "/Users/sumanth/Downloads/New/output/epic_facts_10/short_01_urmila_slumber/scene_04.png",
-            "/Users/sumanth/Downloads/New/output/epic_facts_10/short_01_urmila_slumber/scene_05.png"
-        ]
-        
+        topic = dossier.get("topic", "").lower()
+
+        # Search existing output directories for topic matches
+        matched_scenes = []
+        search_dirs = glob.glob(os.path.join(WORKSPACE_ROOT, "output/*/*"))
+        for d in search_dirs:
+            if not os.path.isdir(d):
+                continue
+            base = os.path.basename(d).lower()
+            # If any significant keyword from topic is in directory name
+            keywords = [w for w in topic.split() if len(w) > 3 and w not in ("short", "video", "about", "sacred", "secret")]
+            if any(k in base for k in keywords):
+                candidate_scenes = sorted(glob.glob(os.path.join(d, "scene_*.png")))
+                if len(candidate_scenes) >= 5:
+                    matched_scenes = candidate_scenes[:5]
+                    logger.info(f"🎯 Found topic-matched visual assets in {d}")
+                    break
+
+        # Fallback to squirrel masterwork if no direct match
+        if not matched_scenes:
+            squirrel_scenes = sorted(glob.glob(os.path.join(WORKSPACE_ROOT, "output/animated_squirrel_ramayana/scene_*.png")))
+            if len(squirrel_scenes) >= 5:
+                matched_scenes = squirrel_scenes[:5]
+
         for i in range(5):
             dest = os.path.join(target_dir, f"keyframe_{i+1:02d}.png")
-            if os.path.exists(sample_assets[i]):
+            if matched_scenes and i < len(matched_scenes) and os.path.exists(matched_scenes[i]):
                 import shutil
-                shutil.copyfile(sample_assets[i], dest)
+                shutil.copyfile(matched_scenes[i], dest)
             else:
-                # Create a procedural solid 1080x1920 image via ffmpeg if none exists
                 subprocess.run([
                     get_ffmpeg_path(), "-y", "-f", "lavfi",
-                    "-i", f"color=c=0x1a243b:s=1080x1920:d=1",
+                    "-i", "color=c=0x1a243b:s=1080x1920:d=1",
                     "-vframes", "1", dest
                 ], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             paths.append(dest)

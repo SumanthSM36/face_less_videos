@@ -9,3 +9,4 @@ from .voice_creator import VoiceCreator
 from .video_renderer import VideoRenderer
 from .audience_reviewer import AudienceReviewer
 from .agent_healer import AgentHealer
+from .multi_engine_motion import MultiEngineMotionDirector, EngineType
