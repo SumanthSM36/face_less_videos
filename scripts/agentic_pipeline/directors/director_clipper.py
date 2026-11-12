@@ -186,7 +186,7 @@ class DirectorClipper:
             "generated_shorts": generated_shorts,
             "final_video_path": top_final_mp4,
             "thumbnail_path": top_thumb,
-            "all_ranked_candidates": [c.__dict__ for c in candidates[:8]]
+            "all_ranked_candidates": [c.__dict__ for c in candidates[:15]]
         }
 
         report_file = os.path.join(self.output_dir, "batch_clipping_report.json")

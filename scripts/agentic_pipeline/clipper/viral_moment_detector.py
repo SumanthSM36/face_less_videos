@@ -213,7 +213,7 @@ class ViralMomentDetector:
                     virality_score=sc,
                     source_method="transcript_scanner"
                 ))
-                if len(candidates) >= 8:
+                if len(candidates) >= 15:
                     break
 
             logger.info(f"🎯 Full-video transcript scanner discovered {len(candidates)} high-potential viral moments!")
