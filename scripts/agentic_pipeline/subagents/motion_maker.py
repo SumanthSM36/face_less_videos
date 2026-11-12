@@ -135,11 +135,11 @@ class MotionMaker:
             self.generate_motion_cut(media, cut, out_clip)
             clip_paths.append(out_clip)
 
-        # Concatenate all cuts
+        # Concatenate all cuts using absolute paths
         concat_list = os.path.join(self.output_dir, "cuts_concat.txt")
         with open(concat_list, "w") as f:
             for cp in clip_paths:
-                f.write(f"file '{cp}'\n")
+                f.write(f"file '{os.path.abspath(cp)}'\n")
 
         motion_video_path = os.path.join(self.output_dir, "assembled_motion_sequence.mp4")
         concat_cmd = [
