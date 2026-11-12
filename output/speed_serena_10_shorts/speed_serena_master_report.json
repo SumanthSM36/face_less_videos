@@ -17,7 +17,11 @@
       "funny",
       "viral",
       "highlights"
-    ]
+    ],
+    "youtube": {
+      "status": "READY_FOR_UPLOAD",
+      "note": "Waiting for YouTube 24h rolling quota window reset (~16:13 UTC / 21:43 IST)"
+    }
   },
   {
     "index": 2,
@@ -37,7 +41,11 @@
       "training",
       "viral",
       "funny"
-    ]
+    ],
+    "youtube": {
+      "status": "READY_FOR_UPLOAD",
+      "note": "Waiting for YouTube 24h rolling quota window reset (~16:13 UTC / 21:43 IST)"
+    }
   },
   {
     "index": 3,
@@ -56,7 +64,11 @@
       "kinetic chain",
       "tennis tutorial",
       "viral"
-    ]
+    ],
+    "youtube": {
+      "status": "READY_FOR_UPLOAD",
+      "note": "Waiting for YouTube 24h rolling quota window reset (~16:13 UTC / 21:43 IST)"
+    }
   },
   {
     "index": 4,
@@ -75,7 +87,11 @@
       "speed meets serena",
       "tennis",
       "legend"
-    ]
+    ],
+    "youtube": {
+      "status": "READY_FOR_UPLOAD",
+      "note": "Waiting for YouTube 24h rolling quota window reset (~16:13 UTC / 21:43 IST)"
+    }
   },
   {
     "index": 5,
@@ -94,7 +110,11 @@
       "roast",
       "overhead smash",
       "funny moments"
-    ]
+    ],
+    "youtube": {
+      "status": "READY_FOR_UPLOAD",
+      "note": "Waiting for YouTube 24h rolling quota window reset (~16:13 UTC / 21:43 IST)"
+    }
   },
   {
     "index": 6,
@@ -113,7 +133,11 @@
       "76 mph serve",
       "tennis serve",
       "lets go"
-    ]
+    ],
+    "youtube": {
+      "status": "READY_FOR_UPLOAD",
+      "note": "Waiting for YouTube 24h rolling quota window reset (~16:13 UTC / 21:43 IST)"
+    }
   },
   {
     "index": 7,
@@ -132,7 +156,11 @@
       "108 mph",
       "tennis ace",
       "humbled"
-    ]
+    ],
+    "youtube": {
+      "status": "READY_FOR_UPLOAD",
+      "note": "Waiting for YouTube 24h rolling quota window reset (~16:13 UTC / 21:43 IST)"
+    }
   },
   {
     "index": 8,
@@ -151,7 +179,11 @@
       "tennis cones",
       "funny fail",
       "viral"
-    ]
+    ],
+    "youtube": {
+      "status": "READY_FOR_UPLOAD",
+      "note": "Waiting for YouTube 24h rolling quota window reset (~16:13 UTC / 21:43 IST)"
+    }
   },
   {
     "index": 9,
@@ -170,7 +202,11 @@
       "serve return",
       "miracle",
       "epic moment"
-    ]
+    ],
+    "youtube": {
+      "status": "READY_FOR_UPLOAD",
+      "note": "Waiting for YouTube 24h rolling quota window reset (~16:13 UTC / 21:43 IST)"
+    }
   },
   {
     "index": 10,
@@ -189,6 +225,10 @@
       "go pro",
       "brutal honesty",
       "funny"
-    ]
+    ],
+    "youtube": {
+      "status": "READY_FOR_UPLOAD",
+      "note": "Waiting for YouTube 24h rolling quota window reset (~16:13 UTC / 21:43 IST)"
+    }
   }
 ]
